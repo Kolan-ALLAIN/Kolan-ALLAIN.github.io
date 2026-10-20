@@ -1,205 +1,2577 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kolan ALLAIN — Portfolio</title>
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kolan Allain</title>
+<meta name="description" content="Portfolio de Kolan Allain, développeur web full stack en alternance chez Shwett.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a 3D hike fixed behind the page. Scroll = climb from the Vendée valley at dawn to a night summit.
+   Text rides a left column over a forest scrim; trail markers (balisage GR rouge et blanc) mark each chapter. */
+:root{
+  --ink:#0f1a16;          /* deep forest night */
+  --moss:#1f2e27;
+  --cream:#f2eee3;        /* text on scene */
+  --mist:#c3cbc0;         /* secondary text */
+  --balise:#d6503a;       /* GR trail-marker red */
+  --chalk:#f7f5ee;        /* GR trail-marker white */
+  --line:rgba(242,238,227,.18);
+  --panel:rgba(13,22,18,.62);
+  --display:"Big Shoulders Display","Arial Narrow","Roboto Condensed",Impact,sans-serif;
+  --body:"Instrument Sans","Helvetica Neue",Arial,system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+body{
+  background:var(--ink);
+  background-image:linear-gradient(180deg,#8fa7a3 0%,#5d7f86 30%,#b9805f 65%,#0d1720 100%);
+  background-attachment:fixed;
+  color:var(--cream);font-family:var(--body);font-size:17px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--ink)}
+#scene{position:fixed;inset:0;width:100%;height:100%;display:block;z-index:0;opacity:0;transition:opacity 1.6s ease}
+#scene.on{opacity:1}
+.loader{position:fixed;z-index:45;left:50%;top:calc(18px + env(safe-area-inset-top,0px));transform:translateX(-50%);display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mist);padding:7px 14px;border-radius:999px;background:rgba(13,22,18,.55);border:1px solid var(--line);backdrop-filter:blur(6px)}
+.loader i{width:7px;height:7px;border-radius:50%;background:var(--balise);animation:pulse 1.1s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.25}}
+@media (max-width:640px){.loader{top:auto;bottom:calc(84px + env(safe-area-inset-bottom,0px))}}
+.scrim{position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(90deg,rgba(10,18,15,.72) 0%,rgba(10,18,15,.45) 32%,rgba(10,18,15,.04) 60%,rgba(10,18,15,0) 100%),
+             linear-gradient(0deg,rgba(10,18,15,.45) 0%,rgba(10,18,15,0) 30%)}
+.grain{position:fixed;inset:0;z-index:2;pointer-events:none;opacity:.06;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* ---------- top bar ---------- */
+.top{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:50;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding-block:16px;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px))}
+.mono-ka{font-family:var(--display);font-weight:900;font-size:26px;letter-spacing:.02em;color:var(--cream);text-decoration:none;display:flex;align-items:center;gap:10px}
+.mark{display:inline-grid;width:18px;height:22px;grid-template-rows:1fr 1fr;border-radius:2px;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,.2)}
+.mark i:first-child{background:var(--chalk)}.mark i:last-child{background:var(--balise)}
+.top nav{display:flex;align-items:center;gap:22px}
+.top nav a{color:var(--cream);text-decoration:none;font-size:14px;font-weight:500;letter-spacing:.02em;opacity:.82;transition:opacity .2s}
+.top nav a:hover,.top nav a:focus-visible{opacity:1}
+.lang{font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--cream);background:rgba(15,26,22,.5);
+  border:1px solid var(--line);border-radius:999px;padding:6px 12px;cursor:pointer;backdrop-filter:blur(6px)}
+.lang:hover{border-color:var(--cream)}
+:focus-visible{outline:2px solid var(--balise);outline-offset:3px}
+
+/* ---------- page column ---------- */
+main{position:relative;z-index:3}
+.wrap{max-width:1240px;margin:0 auto;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px))}
+.col{max-width:560px}
+section{padding-block:clamp(110px,20vh,220px)}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--mist);display:flex;align-items:center;gap:10px;margin:0 0 18px}
+.eyebrow .mark{width:12px;height:15px}
+h1,h2,h3{font-family:var(--display);font-weight:800;line-height:.92;margin:0;text-wrap:balance;letter-spacing:.005em}
+h2{font-size:clamp(40px,7vw,92px);text-transform:uppercase;overflow-wrap:break-word}
+.start>*,.camp>*{min-width:0}
+h3{font-size:30px;text-transform:uppercase;letter-spacing:.01em}
+p{margin:0;max-width:62ch;text-wrap:pretty}
+.lead{font-size:19px;color:var(--cream)}
+.muted{color:var(--mist)}
+.stack{display:flex;flex-direction:column;gap:20px}
+.shadowed{text-shadow:0 1px 18px rgba(8,14,12,.55)}
+
+/* hero */
+.hero{min-height:88vh;display:flex;align-items:flex-end;padding-block:140px 90px}
+.hero>.wrap,.summit>.wrap{width:100%;min-width:0}
+.hero h1{font-size:clamp(76px,15vw,210px);text-transform:uppercase;line-height:.82;letter-spacing:-.005em}
+.hero h1 .ln{display:block;overflow:hidden;padding-bottom:.04em}
+.hero h1 .ch{display:inline-block}
+.hero .role{font-family:var(--display);font-weight:600;font-size:clamp(24px,3vw,34px);letter-spacing:.04em;text-transform:uppercase;color:var(--chalk);margin-top:22px}
+.hero .role b{color:var(--balise);font-weight:800}
+.status{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;
+  padding:8px 14px;border:1px solid var(--line);border-radius:999px;background:rgba(15,26,22,.45);backdrop-filter:blur(6px);margin-bottom:28px}
+.dot{width:8px;height:8px;border-radius:50%;background:#8fd18a;box-shadow:0 0 0 4px rgba(143,209,138,.18)}
+.cue{display:flex;align-items:center;gap:14px;margin-top:40px;font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--mist)}
+.cue .stick{width:1px;height:48px;background:linear-gradient(var(--cream),transparent);position:relative;overflow:hidden}
+.cue .stick::after{content:"";position:absolute;left:0;top:-30%;width:1px;height:30%;background:var(--balise);animation:drip 2.2s ease-in-out infinite}
+@keyframes drip{to{top:110%}}
+
+/* départ */
+.start{display:grid;grid-template-columns:minmax(0,560px) auto;gap:56px;align-items:center}
+.portrait{width:clamp(180px,22vw,260px);aspect-ratio:4/5;max-width:100%;border-radius:140px 140px 18px 18px;overflow:hidden;position:relative;
+  box-shadow:0 30px 60px -20px rgba(0,0,0,.6);border:1px solid rgba(242,238,227,.25)}
+.portrait img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block;filter:saturate(.92) contrast(1.02)}
+.portrait figcaption{position:absolute;left:12px;bottom:12px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;background:rgba(15,26,22,.7);padding:4px 8px;border-radius:4px}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.chip{font-family:var(--mono);font-size:12px;letter-spacing:.04em;padding:6px 11px;border-radius:6px;background:rgba(242,238,227,.1);border:1px solid var(--line)}
+
+/* sentier */
+.trail{position:relative;margin-top:56px;display:flex;flex-direction:column;gap:56px;padding-left:44px}
+.trail::before{content:"";position:absolute;left:8px;top:6px;bottom:6px;width:2px;
+  background:repeating-linear-gradient(180deg,var(--cream) 0 10px,transparent 10px 20px);opacity:.35}
+.trail .fill{position:absolute;left:8px;top:6px;width:2px;height:100%;background:var(--balise);transform-origin:top;transform:scaleY(1)}
+.wp{position:relative;display:flex;flex-direction:column;gap:8px}
+.wp .mark{position:absolute;left:-44px;top:8px;width:18px;height:22px}
+.wp .yr{font-family:var(--display);font-weight:900;font-size:clamp(40px,5vw,58px);line-height:.9;color:var(--chalk);font-variant-numeric:tabular-nums}
+.wp .place{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mist)}
+.wp h3{font-size:26px}
+
+/* camp de base */
+.camp{display:grid;grid-template-columns:minmax(0,560px) minmax(0,1fr);gap:48px;align-items:end}
+.sign{justify-self:end;align-self:center;width:min(340px,100%);background:var(--chalk);color:var(--ink);border-radius:6px;padding:18px 20px 16px;
+  box-shadow:0 24px 50px -18px rgba(0,0,0,.6);transform:rotate(-2deg);position:relative}
+.sign::after{content:"";position:absolute;left:50%;bottom:-120px;width:12px;height:120px;background:#6b5a46;transform:translateX(-50%);z-index:-1;border-radius:2px}
+.sign .row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-family:var(--display);font-weight:800;font-size:24px;text-transform:uppercase;line-height:1.1;padding:8px 0;border-bottom:2px solid rgba(15,26,22,.15)}
+.sign .row:last-child{border-bottom:0}
+.sign .row span:last-child{font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.04em;color:#4a554f}
+.sign .head{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--balise);margin-bottom:4px}
+.btn{display:inline-flex;align-items:center;gap:10px;font-weight:600;font-size:15px;color:var(--ink);background:var(--chalk);text-decoration:none;
+  padding:12px 18px;border-radius:999px;border:0;cursor:pointer;transition:transform .2s, background .2s;font-family:var(--body)}
+.btn:hover{transform:translateY(-2px)}
+.btn.ghost{background:rgba(15,26,22,.5);color:var(--cream);border:1px solid var(--line);backdrop-filter:blur(6px)}
+.btn.red{background:var(--balise);color:var(--chalk)}
+.btns{display:flex;flex-wrap:wrap;gap:10px}
+
+/* projets */
+.projects{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin-top:48px}
+.proj{background:var(--panel);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:14px;overflow:hidden;
+  display:flex;flex-direction:column;transition:transform .35s cubic-bezier(.2,.7,.2,1),border-color .3s}
+.proj:hover{transform:translateY(-6px);border-color:rgba(242,238,227,.4)}
+.proj canvas{display:block;width:100%;height:150px;border-bottom:1px solid var(--line)}
+.proj .in{padding:22px 22px 24px;display:flex;flex-direction:column;gap:12px;flex:1}
+.proj .tag{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--mist)}
+.proj h3{font-size:34px}
+.proj p{font-size:15.5px;color:var(--mist)}
+.proj .tech{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:6px}
+.proj a.code{font-family:var(--mono);font-size:12.5px;color:var(--cream);text-decoration:none;border-bottom:1px solid var(--balise);align-self:flex-start;padding-bottom:2px}
+.proj a.code:hover{color:var(--balise)}
+
+/* sac */
+.bag{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:28px 36px;margin-top:44px;max-width:1120px}
+.bag h4{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--balise);margin:0 0 10px;font-weight:500}
+.bag ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.lv{display:flex;flex-direction:column;gap:10px}
+.lv div{display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:center;font-size:15px}
+.lv .bar{grid-column:1/-1;height:4px;border-radius:2px;background:rgba(242,238,227,.15);overflow:hidden}
+.lv .bar i{display:block;height:100%;background:var(--chalk)}
+.lv code{font-family:var(--mono);font-size:12px;color:var(--mist)}
+
+/* sommet */
+.summit{min-height:92vh;display:flex;align-items:center}
+.summit h2{font-size:clamp(44px,7.5vw,112px)}
+.mail{display:flex;align-items:center;flex-wrap:wrap;gap:10px 14px;margin-top:8px}
+.mail .addr{font-family:var(--mono);font-size:clamp(16px,2.2vw,22px);user-select:all;word-break:break-all}
+footer{position:relative;z-index:3;padding-block:28px 120px;font-family:var(--mono);font-size:12px;color:var(--mist)}
+
+/* HUD : profil altimétrique */
+.hud{position:fixed;z-index:40;right:max(20px,calc(env(safe-area-inset-right,0px) + 20px));bottom:calc(20px + env(safe-area-inset-bottom,0px));
+  width:250px;padding:12px 14px 10px;border-radius:12px;background:rgba(13,22,18,.62);border:1px solid var(--line);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.hud .hd{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mist)}
+.hud .hd b{color:var(--cream);font-weight:500;font-variant-numeric:tabular-nums}
+.hud svg{display:block;width:100%;height:54px;margin-top:6px;overflow:visible}
+.hud .now{font-family:var(--display);font-weight:800;font-size:20px;text-transform:uppercase;letter-spacing:.02em;margin-top:2px}
+
+.reveal{will-change:transform}
+
+@media (max-width:900px){
+  .start,.camp{grid-template-columns:1fr}
+  .sign{justify-self:start;transform:rotate(-1.5deg)}
+  .sign::after{display:none}
+  .projects{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+  body{font-size:16px}
+  .scrim{background:linear-gradient(180deg,rgba(10,18,15,.45),rgba(10,18,15,.62))}
+  .top nav a{display:none}
+  .hud{left:max(16px,calc(env(safe-area-inset-left,0px) + 16px));right:max(16px,calc(env(safe-area-inset-right,0px) + 16px));width:auto;padding:8px 12px 6px}
+  .hud svg{height:34px}
+  .hud .now{font-size:16px}
+  .trail{padding-left:36px}
+  .wp .mark{left:-36px}
+  .wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+  .top{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .cue .stick::after{animation:none}
+  .proj,.btn{transition:none}
+}
+</style>
 </head>
 <body>
 
-  <!-- NAVBAR -->
-  <nav class="navbar" id="navbar">
-    <div class="nav-logo">KA</div>
-    <ul class="nav-links">
-      <li><a href="#hero">Accueil</a></li>
-      <li><a href="#about">À propos</a></li>
-      <li><a href="#projects">Projets</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-    <button class="nav-toggle" id="navToggle"><i class="fas fa-bars"></i></button>
+
+<canvas id="scene" aria-hidden="true"></canvas>
+<div class="scrim" aria-hidden="true"></div>
+<div class="loader" id="loader" role="status"><i></i><span data-i18n="load">La forêt pousse…</span></div>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="top">
+  <a class="mono-ka" href="#top" aria-label="Kolan Allain"><span class="mark" aria-hidden="true"><i></i><i></i></span>KA</a>
+  <nav>
+    <a href="#sentier" data-i18n="nav.trail">Le sentier</a>
+    <a href="#shwett" data-i18n="nav.work">Shwett</a>
+    <a href="#projets" data-i18n="nav.projects">Projets</a>
+    <a href="#contact" data-i18n="nav.contact">Contact</a>
+    <button class="lang" id="lang" type="button" aria-label="Switch to English">EN</button>
   </nav>
+</header>
 
+<main id="top">
   <!-- HERO -->
-  <section class="hero" id="hero">
-    <div class="hero-bg">
-      <div class="blob blob1"></div>
-      <div class="blob blob2"></div>
-      <div class="blob blob3"></div>
-    </div>
-    <div class="hero-content">
-      <div class="hero-badge">👋 Disponible pour alternance / stage</div>
-      <h1>Kolan <span class="gradient-text">ALLAIN</span></h1>
-      <p class="hero-subtitle">Étudiant en <strong>BUT Informatique</strong> — IUT de La Rochelle</p>
-      <p class="hero-desc">Passionné par le développement web, les systèmes embarqués et la création d'expériences numériques.</p>
-      <div class="hero-buttons">
-        <a href="#projects" class="btn btn-primary"><i class="fas fa-rocket"></i> Voir mes projets</a>
-        <a href="#contact" class="btn btn-secondary"><i class="fas fa-envelope"></i> Me contacter</a>
-      </div>
-      <div class="hero-socials">
-        <a href="https://github.com/Kolan-ALLAIN" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
-        <a href="mailto:kolanallain85@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
-      </div>
-    </div>
-    <div class="hero-scroll">
-      <span>Scroll</span>
-      <i class="fas fa-chevron-down"></i>
+  <section class="hero" data-stop="hero.stop">
+    <div class="wrap">
+      <div class="status"><span class="dot"></span><span data-i18n="hero.status">En alternance chez Shwett · 2026–2027</span></div>
+      <h1 class="shadowed" aria-label="Kolan Allain"><span class="ln" aria-hidden="true">Kolan</span><span class="ln" aria-hidden="true">Allain</span></h1>
+      <p class="role" data-i18n="hero.role">Développeur web <b>full stack</b></p>
+      <p class="lead shadowed" style="margin-top:14px" data-i18n="hero.sub">Alternant chez Shwett à Challans, en 3ᵉ année de BUT Informatique à l'IUT de La Rochelle.</p>
+      <div class="cue"><span class="stick"></span><span data-i18n="hero.cue">Faites défiler : on part de la vallée, on finit au sommet</span></div>
     </div>
   </section>
 
-  <!-- ABOUT -->
-  <section class="about" id="about">
-    <div class="container">
-      <h2 class="section-title">À <span class="gradient-text">propos</span></h2>
-      <div class="about-grid">
-        <div class="about-text">
-          <p>Je suis <strong>Kolan ALLAIN</strong>, étudiant en 2ème année de <strong>BUT Informatique</strong> à l'IUT de La Rochelle, spécialité <strong>Déploiement de Services</strong>.</p>
-          <p>J'aime concevoir des applications complètes, du front-end au back-end, et travailler en équipe sur des projets concrets et ambitieux.</p>
-          <div class="skills">
-            <span class="skill-tag"><i class="fab fa-java"></i> Java</span>
-            <span class="skill-tag"><i class="fab fa-js"></i> JavaScript</span>
-            <span class="skill-tag"><i class="fab fa-react"></i> React</span>
-            <span class="skill-tag"><i class="fab fa-python"></i> Python</span>
-            <span class="skill-tag"><i class="fab fa-php"></i> PHP</span>
-            <span class="skill-tag"><i class="fas fa-database"></i> SQL</span>
-            <span class="skill-tag"><i class="fab fa-git-alt"></i> Git</span>
-            <span class="skill-tag"><i class="fab fa-docker"></i> Docker</span>
-            <span class="skill-tag"><i class="fas fa-microchip"></i> Arduino</span>
-          </div>
+  <!-- DÉPART -->
+  <section id="depart" data-stop="start.stop">
+    <div class="wrap start">
+      <div class="stack shadowed reveal">
+        <p class="eyebrow"><span class="mark"><i></i><i></i></span><span data-i18n="start.eyebrow">Point de départ</span></p>
+        <h2 data-i18n="start.title">La Chaize-le-Vicomte</h2>
+        <p class="lead" data-i18n="start.body">J'ai grandi dans le bocage vendéen, à côté de La Roche-sur-Yon. J'y ai appris deux choses qui ne m'ont plus quitté : le handball, que je joue depuis mes 6 ans, et l'envie de comprendre comment les choses fonctionnent.</p>
+        <p class="muted" data-i18n="start.body2">Sur le terrain comme dans le code, je retrouve la même logique : un collectif, un plan de jeu, et de la rigueur dans l'exécution.</p>
+        <div class="facts">
+          <span class="chip" data-i18n="start.f1">Handball depuis 6 ans</span>
+          <span class="chip" data-i18n="start.f2">Niveau régional 2021–2023</span>
+          <span class="chip" data-i18n="start.f3">Seniors aujourd'hui</span>
+          <span class="chip" data-i18n="start.f4">Permis B</span>
         </div>
-        <div class="about-card">
-          <div class="info-item"><i class="fas fa-graduation-cap"></i><span>BUT Informatique — IUT La Rochelle</span></div>
-          <div class="info-item"><i class="fas fa-code-branch"></i><span>Spécialité : Déploiement de Services</span></div>
-          <div class="info-item"><i class="fas fa-map-marker-alt"></i><span>La Rochelle, France</span></div>
-          <div class="info-item"><i class="fas fa-calendar"></i><span>2ème année (2025–2026)</span></div>
+      </div>
+      <figure class="portrait reveal" style="margin:0">
+        <img src="data:image/jpeg;base64,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" alt="Portrait de Kolan Allain" width="480" height="480">
+        <figcaption>46.67°N · 1.30°W</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- SENTIER -->
+  <section id="sentier" data-stop="trail.stop">
+    <div class="wrap">
+      <div class="col shadowed">
+        <p class="eyebrow"><span class="mark"><i></i><i></i></span><span data-i18n="trail.eyebrow">Le sentier</span></p>
+        <h2 class="reveal" data-i18n="trail.title">Six balises jusqu'ici</h2>
+        <div class="trail" id="trail">
+          <span class="fill" aria-hidden="true"></span>
+          <article class="wp"><span class="mark"><i></i><i></i></span><span class="yr">2020</span><h3 data-i18n="w1.t">Premier contact avec le web</h3><span class="place">MediaProDX · La Chaize-le-Vicomte</span><p class="muted" data-i18n="w1.b">Stage découverte : mes premières pages en HTML et CSS, encadré par l'équipe, et un premier échange avec des clients.</p></article>
+          <article class="wp"><span class="mark"><i></i><i></i></span><span class="yr">2021–24</span><h3 data-i18n="w2.t">Bac général, mention Bien</h3><span class="place" data-i18n="w2.p">Lycée De Lattre de Tassigny · La Roche-sur-Yon</span><p class="muted" data-i18n="w2.b">Spécialités mathématiques, NSI et physique-chimie. C'est en NSI que j'ai écrit mes premiers vrais programmes.</p></article>
+          <article class="wp"><span class="mark"><i></i><i></i></span><span class="yr">2021–23</span><h3 data-i18n="w3.t">Handball en niveau régional</h3><span class="place">Vendée</span><p class="muted" data-i18n="w3.b">Trois saisons en régional : entraînements, déplacements, et l'habitude de jouer pour l'équipe avant de jouer pour soi.</p></article>
+          <article class="wp"><span class="mark"><i></i><i></i></span><span class="yr">2024</span><h3 data-i18n="w4.t">Entrée en BUT Informatique</h3><span class="place" data-i18n="w4.p">IUT de La Rochelle</span><p class="muted" data-i18n="w4.b">Algorithmique, bases de données, réseau, développement web et applicatif. En parallèle, des missions d'intérim comme préparateur de commandes chez La Boulangère.</p></article>
+          <article class="wp"><span class="mark"><i></i><i></i></span><span class="yr">2025</span><h3 data-i18n="w5.t">Projets en équipe</h3><span class="place" data-i18n="w4.p">IUT de La Rochelle</span><p class="muted" data-i18n="w5.b">Mars Survivor en C++ avec Qt pour clôturer la 1ʳᵉ année, puis Smart Campus en Symfony, avec un vrai client et une organisation agile.</p></article>
+          <article class="wp"><span class="mark"><i></i><i></i></span><span class="yr">2026</span><h3 data-i18n="w6.t">Alternance chez Shwett</h3><span class="place">Challans · Vendée</span><p class="muted" data-i18n="w6.b">3ᵉ année de BUT en alternance, comme développeur, dans une startup qui supervise des infrastructures informatiques en 3D.</p></article>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- PROJECTS -->
-  <section class="projects" id="projects">
-    <div class="container">
-      <h2 class="section-title">Mes <span class="gradient-text">Projets</span></h2>
-      <p class="section-subtitle">Projets réalisés dans le cadre de mon BUT Informatique</p>
-      <div class="projects-grid">
-
-        <!-- CasMusic -->
-        <div class="project-card" data-aos="fade-up">
-          <div class="project-header" style="background: linear-gradient(135deg, #667eea, #764ba2);">
-            <i class="fas fa-music project-icon"></i>
-            <div class="project-tags">
-              <span class="tag">Web</span>
-              <span class="tag">React</span>
-              <span class="tag">Java</span>
-            </div>
-          </div>
-          <div class="project-body">
-            <h3>🎵 CasMusic</h3>
-            <p>Application web de gestion pour une école de musique. Inscription des élèves, suivi des cours, gestion des enseignants et des plannings.</p>
-            <div class="project-tech">
-              <span>React</span><span>Java Spring</span><span>PostgreSQL</span>
-            </div>
-            <div class="project-links">
-              <a href="https://github.com/Kolan-ALLAIN/CasMusic" target="_blank" class="btn-link"><i class="fab fa-github"></i> Code source</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Mars Survivors -->
-        <div class="project-card" data-aos="fade-up" data-aos-delay="100">
-          <div class="project-header" style="background: linear-gradient(135deg, #f7971e, #e03131);">
-            <i class="fas fa-rocket project-icon"></i>
-            <div class="project-tags">
-              <span class="tag">Jeu</span>
-              <span class="tag">Java</span>
-            </div>
-          </div>
-          <div class="project-body">
-            <h3>🚀 Mars Survivors</h3>
-            <p>Jeu de survie développé en Java. Le joueur doit survivre sur Mars en gérant ses ressources, en explorant et en affrontant des événements aléatoires.</p>
-            <div class="project-tech">
-              <span>Java</span><span>JavaFX</span><span>POO</span>
-            </div>
-            <div class="project-links">
-              <a href="https://github.com/Kolan-ALLAIN/Mars-Survivors" target="_blank" class="btn-link"><i class="fab fa-github"></i> Code source</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Smart Campus -->
-        <div class="project-card" data-aos="fade-up" data-aos-delay="200">
-          <div class="project-header" style="background: linear-gradient(135deg, #11998e, #38ef7d);">
-            <i class="fas fa-building project-icon"></i>
-            <div class="project-tags">
-              <span class="tag">IoT</span>
-              <span class="tag">Web</span>
-              <span class="tag">Arduino</span>
-            </div>
-          </div>
-          <div class="project-body">
-            <h3>🏫 Smart Campus</h3>
-            <p>Système de gestion intelligente d'un campus connecté. Suivi en temps réel des salles, capteurs IoT, tableau de bord de supervision.</p>
-            <div class="project-tech">
-              <span>Arduino</span><span>Node.js</span><span>MQTT</span><span>Dashboard</span>
-            </div>
-            <div class="project-links">
-              <a href="https://github.com/Kolan-ALLAIN/Smart-Campus" target="_blank" class="btn-link"><i class="fab fa-github"></i> Code source</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Systeme Acquisition -->
-        <div class="project-card" data-aos="fade-up" data-aos-delay="300">
-          <div class="project-header" style="background: linear-gradient(135deg, #4776e6, #8e54e9);">
-            <i class="fas fa-microchip project-icon"></i>
-            <div class="project-tags">
-              <span class="tag">Embarqué</span>
-              <span class="tag">C</span>
-              <span class="tag">Capteurs</span>
-            </div>
-          </div>
-          <div class="project-body">
-            <h3>📡 Système d'Acquisition</h3>
-            <p>Système d'acquisition de données issues de capteurs physiques. Collecte, traitement et visualisation des mesures en temps réel.</p>
-            <div class="project-tech">
-              <span>C</span><span>Arduino</span><span>Capteurs</span><span>Python</span>
-            </div>
-            <div class="project-links">
-              <a href="https://github.com/Kolan-ALLAIN/Systeme-Acquisition" target="_blank" class="btn-link"><i class="fab fa-github"></i> Code source</a>
-            </div>
-          </div>
-        </div>
-
+  <!-- CAMP DE BASE -->
+  <section id="shwett" data-stop="camp.stop">
+    <div class="wrap camp">
+      <div class="stack shadowed reveal">
+        <p class="eyebrow"><span class="mark"><i></i><i></i></span><span data-i18n="camp.eyebrow">Camp de base · 2026</span></p>
+        <h2 data-i18n="camp.title">Développeur chez Shwett</h2>
+        <p class="lead" data-i18n="camp.body">Shwett est une startup de Challans, membre de la French Tech Vendée. Elle édite une plateforme SaaS qui cartographie un système d'information et le supervise en 3D, en temps réel : serveurs, réseau et alertes, site par site, salle par salle.</p>
+        <p class="muted" data-i18n="camp.body2">J'y travaille comme développeur pendant ma 3ᵉ année de BUT. Du web, de la 3D, et des utilisateurs exigeants : les équipes IT qui surveillent leur infrastructure au quotidien.</p>
+        <div class="btns" style="margin-top:6px"><a class="btn" href="https://shwett.com/" target="_blank" rel="noopener"><span data-i18n="camp.link">Découvrir Shwett</span> ↗</a></div>
+      </div>
+      <div class="sign reveal" aria-label="Panneau Shwett">
+        <div class="head" data-i18n="camp.sign">Vous êtes ici</div>
+        <div class="row"><span>Shwett</span><span>Challans</span></div>
+        <div class="row"><span data-i18n="camp.r1">Supervision IT</span><span>SaaS B2B</span></div>
+        <div class="row"><span data-i18n="camp.r2">Cartographie 3D</span><span data-i18n="camp.r2b">temps réel</span></div>
+        <div class="row"><span data-i18n="camp.r3">Alternance</span><span>2026–27</span></div>
       </div>
     </div>
   </section>
 
-  <!-- CONTACT -->
-  <section class="contact" id="contact">
-    <div class="container">
-      <h2 class="section-title">Me <span class="gradient-text">Contacter</span></h2>
-      <p class="section-subtitle">Une opportunité, un projet, une question ? N'hésitez pas !</p>
-      <div class="contact-grid">
-        <a href="mailto:kolanallain85@gmail.com" class="contact-card">
-          <i class="fas fa-envelope"></i>
-          <span>kolanallain85@gmail.com</span>
-        </a>
-        <a href="https://github.com/Kolan-ALLAIN" target="_blank" class="contact-card">
-          <i class="fab fa-github"></i>
-          <span>github.com/Kolan-ALLAIN</span>
-        </a>
+  <!-- PROJETS -->
+  <section id="projets" data-stop="proj.stop">
+    <div class="wrap">
+      <div class="col shadowed">
+        <p class="eyebrow"><span class="mark"><i></i><i></i></span><span data-i18n="proj.eyebrow">Les sommets</span></p>
+        <h2 class="reveal" data-i18n="proj.title">Projets</h2>
+        <p class="lead" style="margin-top:18px" data-i18n="proj.lead">Des projets menés en équipe pendant le BUT, du web à l'embarqué. Le code est sur GitHub.</p>
+      </div>
+      <div class="projects">
+        <article class="proj"><canvas data-seed="3" aria-hidden="true"></canvas><div class="in">
+          <span class="tag" data-i18n="p1.tag">2ᵉ année · en équipe · client réel</span><h3>Smart Campus</h3>
+          <p data-i18n="p1.b">Application web full stack en Symfony pour un campus connecté : suivi des salles à partir de capteurs. Menée avec un client réel, en organisation agile et avec des points de suivi réguliers.</p>
+          <div class="tech"><span class="chip">Symfony</span><span class="chip">PHP</span><span class="chip">Twig</span><span class="chip">SQL</span></div>
+          <a class="code" href="https://github.com/Kolan-ALLAIN/Smart-Campus" target="_blank" rel="noopener"><span data-i18n="proj.code">Voir le code</span> ↗</a></div></article>
+        <article class="proj"><canvas data-seed="7" aria-hidden="true"></canvas><div class="in">
+          <span class="tag" data-i18n="p2.tag">Fin de 1ʳᵉ année · équipe de 4</span><h3>Mars Survivor</h3>
+          <p data-i18n="p2.b">Jeu de survie sur Mars : gestion des ressources, exploration et événements aléatoires. Programmation du jeu et de ses interfaces graphiques, organisation en Kanban.</p>
+          <div class="tech"><span class="chip">C++</span><span class="chip">Qt Creator</span><span class="chip">POO</span><span class="chip">Kanban</span></div>
+          <a class="code" href="https://github.com/Kolan-ALLAIN/Mars-Survivors" target="_blank" rel="noopener"><span data-i18n="proj.code">Voir le code</span> ↗</a></div></article>
+        <article class="proj"><canvas data-seed="11" aria-hidden="true"></canvas><div class="in">
+          <span class="tag" data-i18n="p3.tag">BUT · application web</span><h3>CasMusic</h3>
+          <p data-i18n="p3.b">Gestion d'une école de musique : inscription des élèves, suivi des cours, enseignants et plannings.</p>
+          <div class="tech"><span class="chip">React</span><span class="chip">Java Spring</span><span class="chip">PostgreSQL</span></div>
+          <a class="code" href="https://github.com/Kolan-ALLAIN/CasMusic" target="_blank" rel="noopener"><span data-i18n="proj.code">Voir le code</span> ↗</a></div></article>
+        <article class="proj"><canvas data-seed="19" aria-hidden="true"></canvas><div class="in">
+          <span class="tag" data-i18n="p4.tag">BUT · embarqué</span><h3 data-i18n="p4.t">Système d'acquisition</h3>
+          <p data-i18n="p4.b">Acquisition de mesures issues de capteurs physiques : collecte, traitement et visualisation en temps réel.</p>
+          <div class="tech"><span class="chip">C</span><span class="chip">Arduino</span><span class="chip">Python</span><span class="chip" data-i18n="p4.c">Capteurs</span></div>
+          <a class="code" href="https://github.com/Kolan-ALLAIN/Systeme-Acquisition" target="_blank" rel="noopener"><span data-i18n="proj.code">Voir le code</span> ↗</a></div></article>
       </div>
     </div>
   </section>
 
-  <!-- FOOTER -->
-  <footer class="footer">
-    <p>© 2026 Kolan ALLAIN — Fait avec ❤️ | <a href="https://github.com/Kolan-ALLAIN" target="_blank">GitHub</a></p>
-  </footer>
+  <!-- SAC -->
+  <section id="sac" data-stop="bag.stop">
+    <div class="wrap shadowed">
+      <p class="eyebrow"><span class="mark"><i></i><i></i></span><span data-i18n="bag.eyebrow">Dans le sac</span></p>
+      <h2 class="reveal" data-i18n="bag.title">Compétences</h2>
+      <div class="bag">
+        <div><h4 data-i18n="bag.g1">Langages</h4><ul><li class="chip">HTML</li><li class="chip">CSS</li><li class="chip">JavaScript</li><li class="chip">PHP</li><li class="chip">Twig</li><li class="chip">SQL</li><li class="chip">C++</li><li class="chip">Swift</li></ul></div>
+        <div><h4 data-i18n="bag.g2">Frameworks</h4><ul><li class="chip">Symfony</li><li class="chip">React</li><li class="chip">Qt</li></ul>
+          <h4 style="margin-top:22px" data-i18n="bag.g3">Bases de données</h4><ul><li class="chip">MySQL</li><li class="chip">MariaDB</li><li class="chip">PostgreSQL</li></ul></div>
+        <div><h4 data-i18n="bag.g4">Outils</h4><ul><li class="chip">Git · GitHub</li><li class="chip">VS Code</li><li class="chip">PhpStorm</li><li class="chip">Figma</li><li class="chip">Canva</li><li class="chip">Linux</li><li class="chip">VM</li></ul>
+          <h4 style="margin-top:22px" data-i18n="bag.g5">Méthodes</h4><ul><li class="chip">Scrum</li><li class="chip">Kanban</li><li class="chip">Versionning</li><li class="chip">Claude Code</li></ul></div>
+        <div><h4 data-i18n="bag.g6">Langues</h4>
+          <div class="lv">
+            <div><span data-i18n="bag.fr">Français</span><code data-i18n="bag.native">natif</code><span class="bar"><i style="width:100%"></i></span></div>
+            <div><span data-i18n="bag.en">Anglais</span><code>B2</code><span class="bar"><i style="width:66%"></i></span></div>
+            <div><span data-i18n="bag.es">Espagnol</span><code>B1</code><span class="bar"><i style="width:50%"></i></span></div>
+          </div>
+          <h4 style="margin-top:22px" data-i18n="bag.g7">Qualités</h4><ul><li class="chip" data-i18n="bag.s1">Curieux</li><li class="chip" data-i18n="bag.s2">Rigoureux</li><li class="chip" data-i18n="bag.s3">Organisé</li><li class="chip" data-i18n="bag.s4">Esprit d'équipe</li><li class="chip" data-i18n="bag.s5">Déterminé</li></ul></div>
+      </div>
+    </div>
+  </section>
 
-  <script src="script.js"></script>
+  <!-- SOMMET -->
+  <section id="contact" class="summit" data-stop="sum.stop">
+    <div class="wrap">
+      <div class="col stack shadowed">
+        <p class="eyebrow"><span class="mark"><i></i><i></i></span><span data-i18n="sum.eyebrow">Le sommet</span></p>
+        <h2 data-i18n="sum.title">On continue ensemble&nbsp;?</h2>
+        <p class="lead" data-i18n="sum.body">Un projet, une question, une opportunité pour la suite de mon parcours : écrivez-moi.</p>
+        <div class="mail"><span class="addr" id="addr">kolanallain85@gmail.com</span><button class="btn red" id="copy" type="button" data-i18n="sum.copy">Copier l'adresse</button></div>
+        <div class="btns">
+          <a class="btn" href="https://www.linkedin.com/in/kolan-allain" target="_blank" rel="noopener">LinkedIn ↗</a>
+          <a class="btn ghost" href="https://github.com/Kolan-ALLAIN" target="_blank" rel="noopener">GitHub ↗</a>
+          <a class="btn ghost" href="cv-kolan-allain.pdf" target="_blank" rel="noopener"><span data-i18n="sum.cv">Mon CV (PDF)</span> ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap" data-i18n="foot">© 2026 Kolan Allain · Paysage 3D en Three.js · pins générés avec ez-tree (MIT) · textures et HDRI CC0 (ambientCG, Poly Haven)</div></footer>
+
+<aside class="hud" aria-hidden="true">
+  <div class="hd"><span data-i18n="hud.t">Profil du parcours</span><b id="hudPct">0 %</b></div>
+  <svg id="prof" viewBox="0 0 220 54" preserveAspectRatio="none"></svg>
+  <div class="now" id="hudNow">Départ</div>
+</aside>
+
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"}}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script type="module">
+const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const isMobile = window.matchMedia('(max-width: 700px), (pointer: coarse)').matches;
+
+/* ================= i18n ================= */
+const EN = {
+ "nav.trail":"The trail","nav.work":"Shwett","nav.projects":"Projects","nav.contact":"Contact",
+ "hero.status":"Work-study at Shwett · 2026–2027",
+ "hero.role":"Full stack <b>web developer</b>",
+ "hero.sub":"Work-study developer at Shwett in Challans, in the 3rd year of a Bachelor in Computer Science (BUT) at IUT La Rochelle.",
+ "hero.cue":"Scroll: we start in the valley and end at the summit",
+ "start.eyebrow":"Starting point","start.title":"La Chaize-le-Vicomte",
+ "start.body":"I grew up in the Vendée countryside, near La Roche-sur-Yon. Two things stuck with me from there: handball, which I've played since I was 6, and the urge to understand how things work.",
+ "start.body2":"On the court and in code, the logic is the same: a team, a game plan, and rigour in the execution.",
+ "start.f1":"Handball since age 6","start.f2":"Regional level 2021–2023","start.f3":"Senior team today","start.f4":"Driving licence",
+ "trail.eyebrow":"The trail","trail.title":"Six markers so far",
+ "w1.t":"First contact with the web","w1.b":"Discovery internship: my first pages in HTML and CSS, mentored by the team, and a first taste of talking with clients.",
+ "w2.t":"High school diploma with honours","w2.p":"Lycée De Lattre de Tassigny · La Roche-sur-Yon","w2.b":"Majors in mathematics, computer science (NSI) and physics-chemistry. NSI is where I wrote my first real programs.",
+ "w3.t":"Regional-level handball","w3.b":"Three seasons at regional level: training, away games, and the habit of playing for the team before playing for myself.",
+ "w4.t":"Starting a Computer Science BUT","w4.p":"IUT La Rochelle","w4.b":"Algorithms, databases, networking, web and application development. Alongside, temp work as an order picker at La Boulangère.",
+ "w5.t":"Team projects","w5.b":"Mars Survivor in C++ with Qt to close the first year, then Smart Campus in Symfony, with a real client and an agile workflow.",
+ "w6.t":"Work-study at Shwett","w6.b":"Third year of the BUT as a work-study developer, in a startup that monitors IT infrastructure in 3D.",
+ "camp.eyebrow":"Base camp · 2026","camp.title":"Developer at Shwett",
+ "camp.body":"Shwett is a startup based in Challans and a member of French Tech Vendée. It builds a SaaS platform that maps an IT system and monitors it in 3D, in real time: servers, network and alerts, site by site, room by room.",
+ "camp.body2":"I work there as a developer during my third year. Web, 3D, and demanding users: the IT teams who watch over their infrastructure every day.",
+ "camp.link":"Discover Shwett","camp.sign":"You are here","camp.r1":"IT monitoring","camp.r2":"3D mapping","camp.r2b":"real time","camp.r3":"Work-study",
+ "proj.eyebrow":"The peaks","proj.title":"Projects","proj.lead":"Team projects built during the BUT, from web to embedded systems. The code is on GitHub.","proj.code":"View the code",
+ "p1.tag":"2nd year · team · real client","p1.b":"Full stack Symfony web app for a connected campus: room monitoring driven by sensors. Built with a real client, in an agile setup with regular reviews.",
+ "p2.tag":"End of 1st year · team of 4","p2.b":"Survival game on Mars: resource management, exploration and random events. Game logic and graphical interfaces, organised with Kanban.",
+ "p3.tag":"BUT · web app","p3.b":"Management tool for a music school: student enrolment, lesson tracking, teachers and schedules.",
+ "p4.tag":"BUT · embedded","p4.t":"Data acquisition system","p4.b":"Capturing measurements from physical sensors: collection, processing and real-time visualisation.","p4.c":"Sensors",
+ "bag.eyebrow":"In the backpack","bag.title":"Skills","bag.g1":"Languages","bag.g2":"Frameworks","bag.g3":"Databases","bag.g4":"Tools","bag.g5":"Methods","bag.g6":"Spoken languages","bag.g7":"Strengths",
+ "bag.fr":"French","bag.native":"native","bag.en":"English","bag.es":"Spanish",
+ "bag.s1":"Curious","bag.s2":"Rigorous","bag.s3":"Organised","bag.s4":"Team player","bag.s5":"Determined",
+ "sum.eyebrow":"The summit","sum.title":"Shall we keep going together?","sum.body":"A project, a question, an opportunity for what comes next: write to me.","sum.copy":"Copy address","sum.copied":"Copied","sum.cv":"My CV (PDF, French)",
+ "foot":"© 2026 Kolan Allain · 3D landscape built with Three.js · pines generated with ez-tree (MIT) · textures and HDRI CC0 (ambientCG, Poly Haven)",
+ "hud.t":"Trail profile","load":"Growing the forest…",
+ "hero.stop":"Departure","start.stop":"Vendée","trail.stop":"The trail","camp.stop":"Base camp","proj.stop":"The peaks","bag.stop":"Backpack","sum.stop":"Summit"
+};
+const FR = {"sum.copied":"Copiée","load":"La forêt pousse…","hero.stop":"Départ","start.stop":"Vendée","trail.stop":"Le sentier","camp.stop":"Camp de base","proj.stop":"Les sommets","bag.stop":"Le sac","sum.stop":"Sommet"};
+document.querySelectorAll('[data-i18n]').forEach(el=>{ if(!(el.dataset.i18n in FR)) FR[el.dataset.i18n]=el.innerHTML; });
+let lang='fr';
+try{ const s=localStorage.getItem('ka-lang'); if(s==='en'||s==='fr') lang=s; }catch(e){}
+const T=k=>(lang==='en'?EN:FR)[k]||FR[k]||k;
+const langBtn=document.getElementById('lang');
+function applyLang(){
+  document.documentElement.lang=lang;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{ el.innerHTML=T(el.dataset.i18n); });
+  langBtn.textContent = lang==='fr'?'EN':'FR';
+  langBtn.setAttribute('aria-label', lang==='fr'?'Switch to English':'Passer en français');
+  updateHudLabel(true);
+}
+langBtn.addEventListener('click',()=>{ lang = lang==='fr'?'en':'fr'; try{localStorage.setItem('ka-lang',lang)}catch(e){} applyLang(); if(window.ScrollTrigger) ScrollTrigger.refresh(); });
+
+const copyBtn=document.getElementById('copy');
+copyBtn.addEventListener('click',()=>{
+  const a=document.getElementById('addr').textContent.trim();
+  const done=()=>{copyBtn.textContent=T('sum.copied'); setTimeout(()=>copyBtn.textContent=T('sum.copy'),1800);};
+  const fallback=()=>{const r=document.createRange();r.selectNodeContents(document.getElementById('addr'));const s=getSelection();s.removeAllRanges();s.addRange(r);};
+  try{ navigator.clipboard.writeText(a).then(done,fallback);}catch(e){fallback();}
+});
+
+/* ================= noise & terrain function ================= */
+function hash(x,z){ const s=Math.sin(x*127.1+z*311.7)*43758.5453; return s-Math.floor(s); }
+function vnoise(x,z){
+  const xi=Math.floor(x), zi=Math.floor(z), xf=x-xi, zf=z-zi;
+  const u=xf*xf*(3-2*xf), v=zf*zf*(3-2*zf);
+  const a=hash(xi,zi), b=hash(xi+1,zi), c=hash(xi,zi+1), d=hash(xi+1,zi+1);
+  return a+(b-a)*u+(c-a)*v+(a-b-c+d)*u*v;
+}
+function fbm(x,z){ let s=0,a=.5,f=1; for(let i=0;i<5;i++){ s+=a*vnoise(x*f,z*f); f*=2.03; a*=.5; } return s/0.97; }
+function ridge(x,z){ const r=1-Math.abs(fbm(x,z)*2-1); return r*r; }
+const sstep=(a,b,x)=>{ let t=(x-a)/(b-a); t=Math.max(0,Math.min(1,t)); return t*t*(3-2*t); };
+const XC=z=>Math.sin(z*0.012)*24+Math.sin(z*0.031+1.3)*7;
+const PEAKZ=-430, PEAKX=XC(PEAKZ);
+function H(x,z){
+  const d=Math.abs(x-XC(z));
+  const rise=sstep(140,-460,z);
+  const n=fbm(x*.011+3.1,z*.011+.7), r=ridge(x*.018,z*.018);
+  const m=(n*.5+r*.5)*(18+68*rise);
+  const v=sstep(5,80,d);
+  let h=m*(.1+.9*v)+rise*20+n*3;
+  const dx=x-PEAKX, dz=z-PEAKZ;
+  h+=72*Math.exp(-(dx*dx+dz*dz)/(2*60*60));
+  if(z<-500){ const f=sstep(-500,-700,z); h+=f*(r*120+n*50); }
+  return h;
+}
+
+/* ================= HUD profile ================= */
+const N=160, path=[];
+for(let i=0;i<=N;i++){ const t=i/N, z=130+(PEAKZ-130)*t, x=XC(z); path.push({x,z,y:H(x,z)}); }
+for(let k=0;k<3;k++){ for(let i=1;i<N;i++){ path[i].y=(path[i-1].y+path[i].y*2+path[i+1].y)/4; } }
+const prof=document.getElementById('prof');
+const minY=Math.min(...path.map(p=>p.y)), maxY=Math.max(...path.map(p=>p.y));
+const py=y=>50-(y-minY)/(maxY-minY)*44;
+let d='M0,54 ';
+path.forEach((p,i)=>{ d+=`L${(i/N*220).toFixed(1)},${py(p.y).toFixed(1)} `; });
+prof.innerHTML=`<path d="${d} L220,54 Z" fill="rgba(242,238,227,.12)"/>`+
+ `<path d="${d.replace('M0,54 L','M')}" fill="none" stroke="rgba(242,238,227,.7)" stroke-width="1.2" vector-effect="non-scaling-stroke"/>`+
+ `<g id="ticks"></g><line id="cur" x1="0" x2="0" y1="0" y2="54" stroke="#d6503a" stroke-width="1" vector-effect="non-scaling-stroke"/>`+
+ `<circle id="curDot" r="3.2" fill="#d6503a" stroke="#f7f5ee" stroke-width="1.2"/>`;
+const curLine=document.getElementById('cur'), curDot=document.getElementById('curDot'), hudPct=document.getElementById('hudPct'), hudNow=document.getElementById('hudNow');
+const stops=[...document.querySelectorAll('[data-stop]')];
+let stopT=[];
+function measure(){
+  const max=Math.max(1,document.documentElement.scrollHeight-innerHeight);
+  stopT=stops.map(s=>Math.max(0,Math.min(1,(s.offsetTop-innerHeight*.45)/max)));
+  stopT[0]=0;
+  document.getElementById('ticks').innerHTML=stopT.map(t=>`<rect x="${(t*220-1).toFixed(1)}" y="${(py(path[Math.round(t*N)].y)-7).toFixed(1)}" width="3" height="5" fill="#f7f5ee"/><rect x="${(t*220-1).toFixed(1)}" y="${(py(path[Math.round(t*N)].y)-4).toFixed(1)}" width="3" height="2.5" fill="#d6503a"/>`).join('');
+}
+let lastStop=-1;
+function scrollT(){ const max=Math.max(1,document.documentElement.scrollHeight-innerHeight); return Math.max(0,Math.min(1,scrollY/max)); }
+function updateHudLabel(force){
+  const t=scrollT(); let idx=0; stopT.forEach((s,i)=>{ if(t>=s-0.001) idx=i; });
+  if(idx!==lastStop||force){ lastStop=idx; hudNow.textContent=T(stops[idx].dataset.stop); }
+}
+function updateHud(t){
+  const x=t*220, p=path[Math.round(t*N)];
+  curLine.setAttribute('x1',x); curLine.setAttribute('x2',x);
+  curDot.setAttribute('cx',x); curDot.setAttribute('cy',py(p.y));
+  hudPct.textContent=Math.round(t*100)+' %';
+  updateHudLabel(false);
+}
+
+/* ================= project contour canvases ================= */
+function drawTopo(cv){
+  const r=cv.getBoundingClientRect(), dpr=Math.min(devicePixelRatio||1,2);
+  const w=Math.max(10,r.width), h=150; cv.width=w*dpr; cv.height=h*dpr;
+  const g=cv.getContext('2d'); g.scale(dpr,dpr);
+  const seed=+cv.dataset.seed;
+  const bg=g.createLinearGradient(0,0,w,h); bg.addColorStop(0,'#1c2b24'); bg.addColorStop(1,'#26352c');
+  g.fillStyle=bg; g.fillRect(0,0,w,h);
+  const cx=w*(.55+.25*(hash(seed,1)-.5)), cy=h*(.55+.2*(hash(seed,2)-.5));
+  for(let k=16;k>=1;k--){
+    g.beginPath();
+    for(let a=0;a<=Math.PI*2+.01;a+=.05){
+      const n=fbm(Math.cos(a)*1.4+seed, Math.sin(a)*1.4+seed*.7+k*.06);
+      const rad=k*Math.max(w,h)*.045*(.75+n*.6);
+      const x=cx+Math.cos(a)*rad*1.25, y=cy+Math.sin(a)*rad*.8;
+      a===0?g.moveTo(x,y):g.lineTo(x,y);
+    }
+    g.closePath();
+    g.strokeStyle= k%4===0?'rgba(242,238,227,.42)':'rgba(242,238,227,.16)';
+    g.lineWidth= k%4===0?1.2:.8; g.stroke();
+  }
+  g.fillStyle='#d6503a'; g.beginPath(); g.moveTo(cx,cy-7); g.lineTo(cx+6,cy+4); g.lineTo(cx-6,cy+4); g.closePath(); g.fill();
+}
+const topos=[...document.querySelectorAll('.proj canvas')];
+const drawAllTopo=()=>topos.forEach(drawTopo);
+
+/* ================= motion (GSAP) ================= */
+function initMotion(){
+  document.querySelectorAll('.hero h1 .ln').forEach(ln=>{ ln.innerHTML=[...ln.textContent].map(c=>`<span class="ch">${c}</span>`).join(''); });
+  if(!window.gsap || reduce) return;
+  gsap.from('.hero h1 .ch',{yPercent:105,duration:1.1,ease:'expo.out',stagger:.045,delay:.15});
+  gsap.from(['.hero .status','.hero .role','.hero .lead','.hero .cue'],{y:18,opacity:0,duration:.9,ease:'power3.out',stagger:.1,delay:.55});
+  if(!window.ScrollTrigger) return;
+  gsap.registerPlugin(ScrollTrigger);
+  gsap.utils.toArray('.reveal').forEach(el=>{
+    gsap.fromTo(el,{y:60},{y:-40,ease:'none',scrollTrigger:{trigger:el,start:'top bottom',end:'bottom top',scrub:true}});
+  });
+  gsap.utils.toArray('.wp').forEach(el=>{
+    gsap.fromTo(el,{x:-24},{x:0,ease:'none',scrollTrigger:{trigger:el,start:'top 95%',end:'top 55%',scrub:true}});
+  });
+  gsap.fromTo('#trail .fill',{scaleY:0},{scaleY:1,ease:'none',scrollTrigger:{trigger:'#trail',start:'top 70%',end:'bottom 60%',scrub:true}});
+  gsap.utils.toArray('.proj').forEach((el,i)=>{
+    gsap.fromTo(el,{y:40+i%2*50},{y:-(i%2)*30,ease:'none',scrollTrigger:{trigger:el,start:'top bottom',end:'bottom top',scrub:true}});
+  });
+  gsap.fromTo('.sign',{rotate:-6},{rotate:-1,ease:'none',scrollTrigger:{trigger:'.sign',start:'top bottom',end:'bottom 40%',scrub:true}});
+}
+
+/* ================= boot UI ================= */
+measure(); drawAllTopo();
+applyLang();
+initMotion();
+let worldResize=null, worldRunning=false;
+addEventListener('scroll',()=>{ if(!worldRunning) updateHud(scrollT()); },{passive:true});
+updateHud(0);
+addEventListener('resize',()=>{ measure(); drawAllTopo(); if(worldResize) worldResize(); });
+addEventListener('load',()=>{ measure(); if(window.ScrollTrigger) ScrollTrigger.refresh(); });
+
+const loader=document.getElementById('loader');
+initWorld().catch(e=>{ console.warn('Scène 3D indisponible :', e); if(loader) loader.hidden=true; });
+
+/* =====================================================================
+   THE WORLD — real textures, procedural pines (ez-tree), physical sky
+   ===================================================================== */
+async function initWorld(){
+  const THREE = await import('three');
+  const [{ Sky }, { GLTFLoader }, { RGBELoader }, { mergeGeometries }] = await Promise.all([
+    import('three/addons/objects/Sky.js'),
+    import('three/addons/loaders/GLTFLoader.js'),
+    import('three/addons/loaders/RGBELoader.js'),
+    import('three/addons/utils/BufferGeometryUtils.js'),
+  ]);
+  const EZ = makeEZ(THREE);
+  const ASSET = 'assets/';
+  const LITE = /[?&]lite\b/.test(location.search);
+  const Q = isMobile
+    ? { seg:[200,230], near:260, far:2600, grass:9000, shadows:false, dpr:1, mist:26 }
+    : { seg:[380,420], near:1000, far:8000, grass:36000, shadows:true, dpr:Math.min(devicePixelRatio||1,1.5), mist:60 };
+  if(LITE) Object.assign(Q,{ seg:[200,220], near:260, far:2500, grass:6000, dpr:1 });
+
+  /* ---------- world coordinates (meters) ---------- */
+  const SC = 2.5;
+  const Hs = (x,z)=>SC*H(x/SC,z/SC);
+  const XCs = z=>SC*XC(z/SC);
+  const Z0 = 130*SC, Z1 = PEAKZ*SC;          // path from 325 m to -1075 m
+  const rnd = (()=>{ let s=1234567; return ()=>{ s=(s*16807)%2147483647; return s/2147483647; }; })();
+
+  /* ---------- renderer ---------- */
+  const canvas=document.getElementById('scene');
+  const renderer=new THREE.WebGLRenderer({canvas, antialias:!isMobile, powerPreference:'high-performance'});
+  renderer.setPixelRatio(Q.dpr);
+  renderer.setSize(innerWidth,innerHeight,false);
+  renderer.toneMapping=THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure=.5;
+  renderer.shadowMap.enabled=Q.shadows;
+  renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+  const scene=new THREE.Scene();
+  const camera=new THREE.PerspectiveCamera(isMobile?66:55, innerWidth/innerHeight, .3, 5000);
+  scene.fog=new THREE.FogExp2(0xc4c2b4,.0018);
+
+  /* ---------- assets ---------- */
+  const tl=new THREE.TextureLoader();
+  const aniso=renderer.capabilities.getMaxAnisotropy();
+  const tex=(f,srgb=true,repeat=true)=>new Promise((res,rej)=>tl.load(ASSET+f,t=>{
+    if(srgb) t.colorSpace=THREE.SRGBColorSpace;
+    if(repeat){ t.wrapS=t.wrapT=THREE.RepeatWrapping; }
+    t.anisotropy=Math.min(8,aniso); res(t);
+  },undefined,rej));
+  const [tGrass,tDirt,tGroundN,tBark,tBarkN,tBarkAO,tNeedle,tCloud,grassGltf] = await Promise.all([
+    tex('ground_grass.jpg'), tex('ground_dirt.jpg'), tex('ground_normal.jpg',false),
+    tex('bark_color.jpg'), tex('bark_normal.jpg',false), tex('bark_ao.jpg',false),
+    tex('pine_needles.png',true,false), tex('cloud.png',true,false),
+    new GLTFLoader().loadAsync(ASSET+'grass.gltf.json'),
+  ]);
+  const pmrem=new THREE.PMREMGenerator(renderer);
+  try{
+    // HDRI shipped as base64 text so it can be served next to the page
+    const b64=await (await fetch(ASSET+'forest_slope_1k.hdr.txt')).text();
+    const bin=Uint8Array.from(atob(b64.trim()),c=>c.charCodeAt(0));
+    const d=new RGBELoader().parse(bin.buffer);
+    const hdr=new THREE.DataTexture(d.data,d.width,d.height,THREE.RGBAFormat,d.type);
+    hdr.colorSpace=THREE.LinearSRGBColorSpace; hdr.minFilter=hdr.magFilter=THREE.LinearFilter; hdr.flipY=true; hdr.generateMipmaps=false;
+    hdr.mapping=THREE.EquirectangularReflectionMapping; hdr.needsUpdate=true;
+    scene.environment=pmrem.fromEquirectangular(hdr).texture; hdr.dispose();
+  }catch(e){ console.warn('HDRI non chargé', e); }
+  pmrem.dispose();
+  const tick=()=>new Promise(r=>setTimeout(r,0));
+  await tick();
+
+  /* ---------- sky ---------- */
+  const sky=new Sky(); sky.scale.setScalar(20000); scene.add(sky);
+  const SU=sky.material.uniforms;
+  SU.mieCoefficient.value=.004; SU.mieDirectionalG.value=.82;
+
+  const sg=new THREE.BufferGeometry(), sp=[];
+  for(let i=0;i<2200;i++){ const u=rnd()*Math.PI*2, v=rnd()*.92+.05, c=Math.cos(Math.asin(v)), r=4000; sp.push(Math.cos(u)*c*r, v*r, Math.sin(u)*c*r); }
+  sg.setAttribute('position',new THREE.Float32BufferAttribute(sp,3));
+  const stars=new THREE.Points(sg,new THREE.PointsMaterial({color:0xf2eee3,size:1.8,sizeAttenuation:false,transparent:true,opacity:0,fog:false,depthWrite:false}));
+  stars.renderOrder=-1; scene.add(stars);
+
+  /* ---------- lights ---------- */
+  const hemi=new THREE.HemisphereLight(0xdfe6e0,0x3a3a2a,.4); scene.add(hemi);
+  const sun=new THREE.DirectionalLight(0xffffff,3);
+  sun.castShadow=Q.shadows;
+  if(Q.shadows){
+    sun.shadow.mapSize.set(2048,2048);
+    const c=sun.shadow.camera; c.left=-85; c.right=85; c.top=85; c.bottom=-85; c.near=1; c.far=1200;
+    sun.shadow.bias=-.0004; sun.shadow.normalBias=.6;
+  }
+  scene.add(sun); scene.add(sun.target);
+
+  /* ---------- terrain ---------- */
+  const TW=2600, TD=2900;
+  const tg=new THREE.PlaneGeometry(TW,TD,Q.seg[0],Q.seg[1]);
+  tg.rotateX(-Math.PI/2); tg.translate(0,0,-850);
+  { const pos=tg.attributes.position, uv=tg.attributes.uv;
+    for(let i=0;i<pos.count;i++){ const x=pos.getX(i), z=pos.getZ(i); pos.setY(i,Hs(x,z)); uv.setXY(i,x/7,z/7); }
+    tg.computeVertexNormals(); }
+  const XC_GLSL = `float xcs(float z){ float zz=z/${SC.toFixed(1)}; return ${SC.toFixed(1)}*(sin(zz*0.012)*24.0+sin(zz*0.031+1.3)*7.0); }`;
+  const groundMat=new THREE.MeshStandardMaterial({color:0xffffff, roughness:.96, metalness:0, normalMap:tGroundN, normalScale:new THREE.Vector2(.9,.9)});
+  groundMat.onBeforeCompile=sh=>{
+    sh.uniforms.tGrass={value:tGrass}; sh.uniforms.tDirt={value:tDirt};
+    sh.vertexShader=sh.vertexShader
+      .replace('#include <common>','#include <common>\nvarying vec3 vWPos; varying vec3 vWNrm;')
+      .replace('#include <worldpos_vertex>','#include <worldpos_vertex>\nvWPos=(modelMatrix*vec4(transformed,1.0)).xyz; vWNrm=normalize(mat3(modelMatrix)*objectNormal);');
+    sh.fragmentShader=sh.fragmentShader
+      .replace('#include <common>',`#include <common>
+uniform sampler2D tGrass; uniform sampler2D tDirt; varying vec3 vWPos; varying vec3 vWNrm;
+${XC_GLSL}`)
+      .replace('#include <map_fragment>',`
+vec2 wuv=vWPos.xz;
+vec3 gA=texture2D(tGrass,wuv*0.11).rgb, gB=texture2D(tGrass,wuv*0.013+0.37).rgb;
+float macro=texture2D(tDirt,wuv*0.0021).r;            // large-scale variation
+vec3 grassC=mix(gA,gB,0.45)*mix(0.95,1.4,smoothstep(0.15,0.55,macro));
+grassC=mix(vec3(dot(grassC,vec3(0.3,0.59,0.11))),grassC,1.25);
+grassC=mix(grassC, grassC*vec3(1.08,1.0,0.78), smoothstep(0.3,0.7,texture2D(tGrass,wuv*0.004).g*2.0));
+vec3 dirtC=texture2D(tDirt,wuv*0.16).rgb;
+float rl=dot(texture2D(tDirt,wuv*0.045).rgb,vec3(0.333))*1.6+dot(texture2D(tDirt,vec2(wuv.x*0.01,vWPos.y*0.08)).rgb,vec3(0.25));
+vec3 rockC=vec3(rl)*vec3(0.98,0.96,0.92)+0.03;
+float slope=1.0-clamp(vWNrm.y,0.0,1.0);
+float h=vWPos.y+(macro-0.4)*40.0;
+float trail=1.0-smoothstep(0.9,2.2,abs(vWPos.x-xcs(vWPos.z)));
+trail*=smoothstep(${(Z1-25).toFixed(1)},${(Z1+10).toFixed(1)},vWPos.z);
+vec3 col=grassC;
+col=mix(col,dirtC,clamp(smoothstep(0.22,0.38,slope)*0.7+smoothstep(160.0,210.0,h)*0.55,0.0,1.0));
+col=mix(col,dirtC*0.9,trail);
+col=mix(col,rockC,clamp(smoothstep(0.34,0.55,slope)+smoothstep(210.0,260.0,h)*0.7,0.0,1.0));
+float snow=smoothstep(255.0,300.0,h)*(1.0-smoothstep(0.42,0.62,slope));
+col=mix(col,vec3(0.86,0.89,0.94),snow);
+diffuseColor.rgb*=col;`)
+      .replace('#include <roughnessmap_fragment>','#include <roughnessmap_fragment>\nroughnessFactor=mix(roughnessFactor,0.55,snow);');
+  };
+  const terrain=new THREE.Mesh(tg,groundMat);
+  terrain.receiveShadow=true;
+  scene.add(terrain);
+  await tick();
+
+  /* ---------- pines (ez-tree) ---------- */
+  const windHook=(mat,amp,uniformsBag)=>{
+    mat.onBeforeCompile=sh=>{
+      sh.uniforms.uTime=uniformsBag.uTime;
+      sh.vertexShader=sh.vertexShader
+        .replace('#include <common>','#include <common>\nuniform float uTime;')
+        .replace('#include <begin_vertex>',`#include <begin_vertex>
+#ifdef USE_INSTANCING
+vec3 ip=vec3(instanceMatrix[3][0],instanceMatrix[3][1],instanceMatrix[3][2]);
+#else
+vec3 ip=vec3(0.0);
+#endif
+float ph=ip.x*0.071+ip.z*0.053;
+float k=${amp.toFixed(3)}*clamp(position.y/${(amp>0.5?2.0:60.0).toFixed(1)},0.0,1.6);
+transformed.x+=k*(sin(uTime*1.25+ph)*0.6+sin(uTime*2.9+ph*1.7)*0.25);
+transformed.z+=k*(cos(uTime*1.05+ph*1.3)*0.45);`);
+    };
+  };
+  const WIND={uTime:{value:0}};
+  const barkMat=new THREE.MeshStandardMaterial({map:tBark, normalMap:tBarkN, aoMap:tBarkAO, roughness:1, metalness:0, color:0xd8d0c4});
+  const leafMat=new THREE.MeshStandardMaterial({map:tNeedle, alphaTest:.42, side:THREE.DoubleSide, roughness:.92, metalness:0, color:0xb8c6a2});
+  windHook(leafMat,.45,WIND);
+  const leafDepth=new THREE.MeshDepthMaterial({depthPacking:THREE.RGBADepthPacking, map:tNeedle, alphaTest:.42, side:THREE.DoubleSide});
+
+  const presets=['Pine Small','Pine Medium','Pine Large','Pine Medium'];
+  const detail=isMobile?{sectionStride:3,segmentFactor:.6,leafStride:2,leafScale:1.3}:{sectionStride:2,segmentFactor:.75,leafStride:1};
+  const variants=[];
+  for(let i=0;i<presets.length;i++){
+    const t=new EZ.Tree(); t.options.copy(EZ.loadPreset(presets[i])); t.options.seed=4242+i*977;
+    const g=t.createGeometry(detail);
+    g.branches.computeBoundingBox(); g.leaves.computeBoundingBox();
+    const bb=g.leaves.boundingBox.clone().union(g.branches.boundingBox);
+    variants.push({branches:g.branches, leaves:g.leaves, height:bb.max.y, radius:Math.max(-bb.min.x,bb.max.x,-bb.min.z,bb.max.z)});
+    await tick();
+  }
+
+  // impostors: render each pine once into a texture, used for distant trees
+  const impGeo=(w,h)=>{
+    const a=new THREE.PlaneGeometry(w,h); a.translate(0,h/2,0);
+    const b=a.clone(); b.rotateY(Math.PI/2);
+    const m=mergeGeometries([a,b]);
+    const n=m.attributes.normal; for(let i=0;i<n.count;i++) n.setXYZ(i,0,1,0);
+    return m;
+  };
+  for(const v of variants){
+    const W=256, Hh=512, rt=new THREE.WebGLRenderTarget(W,Hh);
+    const sc=new THREE.Scene();
+    const bm=new THREE.MeshBasicMaterial({map:tBark, color:0x9a8e80});
+    const lm=new THREE.MeshBasicMaterial({map:tNeedle, alphaTest:.42, side:THREE.DoubleSide, color:0x9fb08a});
+    sc.add(new THREE.Mesh(v.branches,bm), new THREE.Mesh(v.leaves,lm));
+    const w=v.radius*2.1, h=v.height*1.02;
+    const cam=new THREE.OrthographicCamera(-w/2,w/2,h,0,.1,2000); cam.position.set(0,0,600); cam.lookAt(0,0,0);
+    renderer.setRenderTarget(rt); renderer.setClearColor(0x000000,0); renderer.clear(); renderer.render(sc,cam); renderer.setRenderTarget(null);
+    bm.dispose(); lm.dispose();
+    v.impTex=rt.texture; v.impGeo=impGeo(w,h);
+    v.impMat=new THREE.MeshStandardMaterial({map:rt.texture, alphaTest:.5, side:THREE.DoubleSide, roughness:1, metalness:0, color:0xffffff});
+  }
+  renderer.setClearColor(0x000000,1);
+
+  // placement
+  const CH=120; // chunk length along the trail (m)
+  const zTop=Z0+200, zBot=Z1-250;
+  const chunkOf=z=>Math.max(0,Math.floor((zTop-z)/CH));
+  const nChunks=chunkOf(zBot-1)+1;
+  const near=[], far=[];
+  const okTree=(x,z)=>{
+    const h=Hs(x,z); if(h>175+fbm(x*.01,z*.01)*30) return null;
+    const s=(Math.abs(Hs(x+2,z)-h)+Math.abs(Hs(x,z+2)-h))/2; if(s>.95) return null;
+    if(fbm(x*.0045+9,z*.0045)<.36) return null;  // natural clearings
+    return h;
+  };
+  let tries=0;
+  while((near.length<Q.near || far.length<Q.far) && tries<400000){
+    tries++;
+    const z=zBot+rnd()*(zTop-zBot), xc=XCs(z);
+    const wantNear=near.length<Q.near && rnd()<.5;
+    const lat=wantNear? 7+Math.pow(rnd(),1.4)*68 : 75+Math.pow(rnd(),.9)*620;
+    const x=xc+(rnd()<.5?-1:1)*lat;
+    const h=okTree(x,z); if(h===null) continue;
+    const item={x,y:h-.4,z,s:.28*(.75+rnd()*.6),r:rnd()*Math.PI*2,v:Math.floor(rnd()*variants.length)};
+    if(wantNear) near.push(item); else if(far.length<Q.far && lat>=75) far.push(item);
+  }
+  const m4=new THREE.Matrix4(), qq=new THREE.Quaternion(), vs=new THREE.Vector3(), vp=new THREE.Vector3(), up=new THREE.Vector3(0,1,0), col=new THREE.Color();
+  const setM=(mesh,i,it,sxz=1)=>{ qq.setFromAxisAngle(up,it.r); vp.set(it.x,it.y,it.z); vs.set(it.s*sxz,it.s*(.92+((it.r*7)%1)*.2),it.s*sxz); m4.compose(vp,qq,vs); mesh.setMatrixAt(i,m4); };
+  const chunks=[...Array(nChunks)].map((_,i)=>({zc:zTop-(i+.5)*CH, full:new THREE.Group(), imp:new THREE.Group(), grass:new THREE.Group()}));
+  const byChunkVariant=(list)=>{ const map=new Map(); list.forEach(it=>{ const k=chunkOf(it.z)*16+it.v; if(!map.has(k)) map.set(k,[]); map.get(k).push(it); }); return map; };
+  for(const [k,items] of byChunkVariant(near)){
+    const ci=Math.floor(k/16), v=variants[k%16], ch=chunks[ci];
+    const br=new THREE.InstancedMesh(v.branches,barkMat,items.length);
+    const lf=new THREE.InstancedMesh(v.leaves,leafMat,items.length);
+    const im=new THREE.InstancedMesh(v.impGeo,v.impMat,items.length);
+    items.forEach((it,i)=>{ setM(br,i,it); setM(lf,i,it); setM(im,i,it);
+      col.setHSL(.24+((it.r*3)%1)*.06,.25,.42+((it.r*5)%1)*.12); lf.setColorAt(i,col); });
+    br.castShadow=lf.castShadow=Q.shadows; br.receiveShadow=lf.receiveShadow=Q.shadows;
+    lf.customDepthMaterial=leafDepth;
+    [br,lf,im].forEach(m=>{ m.computeBoundingSphere(); });
+    ch.full.add(br,lf); ch.imp.add(im);
+  }
+  const farGroup=new THREE.Group();
+  for(const [k,items] of byChunkVariant(far)){
+    const v=variants[k%16];
+    const im=new THREE.InstancedMesh(v.impGeo,v.impMat,items.length);
+    items.forEach((it,i)=>{ setM(im,i,it); col.setHSL(.27,.12,.55+((it.r*5)%1)*.25); im.setColorAt(i,col); });
+    im.computeBoundingSphere(); farGroup.add(im);
+  }
+  scene.add(farGroup);
+  chunks.forEach(c=>{ scene.add(c.full,c.imp,c.grass); });
+  await tick();
+
+  /* ---------- grass tufts (glTF) ---------- */
+  let grassMesh=null; grassGltf.scene.traverse(o=>{ if(o.isMesh && !grassMesh) grassMesh=o; });
+  if(grassMesh){
+    const gm=grassMesh.material.clone();
+    gm.alphaTest=.5; gm.transparent=false; gm.side=THREE.DoubleSide; gm.color=new THREE.Color(0xb3c08f); gm.roughness=.95; gm.metalness=0;
+    windHook(gm,.9,WIND);
+    const per=new Map();
+    let placed=0, gt=0;
+    while(placed<Q.grass && gt<Q.grass*4){
+      gt++;
+      const z=Z1+20+rnd()*(Z0+60-Z1-20), xc=XCs(z);
+      const lat=1.7+Math.pow(rnd(),1.6)*34, x=xc+(rnd()<.5?-1:1)*lat;
+      const h=Hs(x,z); if(h>190) continue;
+      const s=(Math.abs(Hs(x+1,z)-h)+Math.abs(Hs(x,z+1)-h)); if(s>1.1) continue;
+      const ci=chunkOf(z); if(!per.has(ci)) per.set(ci,[]);
+      per.get(ci).push({x,y:h-.05,z,s:.22+rnd()*.25,r:rnd()*6.28}); placed++;
+    }
+    for(const [ci,items] of per){
+      const im=new THREE.InstancedMesh(grassMesh.geometry,gm,items.length);
+      items.forEach((it,i)=>{ setM(im,i,it,1.3); col.setHSL(.2+((it.r*3)%1)*.05,.35,.5+((it.r*7)%1)*.2); im.setColorAt(i,col); });
+      im.receiveShadow=Q.shadows; im.computeBoundingSphere();
+      chunks[ci].grass.add(im);
+    }
+  }
+
+  /* ---------- trail markers (balisage GR) ---------- */
+  {
+    const postG=new THREE.CylinderGeometry(.07,.08,1.25,8); postG.translate(0,.62,0);
+    const whiteG=new THREE.CylinderGeometry(.082,.082,.09,8); whiteG.translate(0,1.06,0);
+    const redG=new THREE.CylinderGeometry(.082,.082,.09,8); redG.translate(0,.96,0);
+    const n=60;
+    const posts=new THREE.InstancedMesh(postG,new THREE.MeshStandardMaterial({map:tBark,color:0x8a7560,roughness:1}),n);
+    const whites=new THREE.InstancedMesh(whiteG,new THREE.MeshStandardMaterial({color:0xf2f0ea,roughness:.7}),n);
+    const reds=new THREE.InstancedMesh(redG,new THREE.MeshStandardMaterial({color:0xc4402d,roughness:.6}),n);
+    let k=0;
+    for(let z=Z0-30; z>Z1+20 && k<n; z-=24){
+      const x=XCs(z)+(k%2?1.9:-1.9);
+      m4.compose(vp.set(x,Hs(x,z)-.05,z),qq.identity(),vs.set(1,1,1));
+      posts.setMatrixAt(k,m4); whites.setMatrixAt(k,m4); reds.setMatrixAt(k,m4); k++;
+    }
+    [posts,whites,reds].forEach(m=>{ m.count=k; m.castShadow=Q.shadows; m.computeBoundingSphere(); scene.add(m); });
+  }
+
+  /* ---------- valley mist (photo cloud sprites) ---------- */
+  const mistMat=new THREE.SpriteMaterial({map:tCloud, transparent:true, depthWrite:false, opacity:.4, color:0xffffff, fog:true});
+  for(let i=0;i<Q.mist;i++){
+    const z=Z0-rnd()*(Z0-Z1+250), xc=XCs(z), side=rnd()<.5?-1:1;
+    const x=xc+side*(25+rnd()*320);
+    const sp=new THREE.Sprite(mistMat);
+    const s=70+rnd()*170;
+    sp.scale.set(s,s*.42,1);
+    sp.position.set(x,Hs(x,z)+6+rnd()*22,z);
+    scene.add(sp);
+  }
+
+  /* ---------- fireflies ---------- */
+  const fg=new THREE.BufferGeometry(), fp=[];
+  for(let i=0;i<(isMobile?90:240);i++) fp.push((rnd()-.5)*40,rnd()*5,(rnd()-.5)*50);
+  fg.setAttribute('position',new THREE.Float32BufferAttribute(fp,3));
+  const dotC=document.createElement('canvas'); dotC.width=dotC.height=64;
+  { const g=dotC.getContext('2d'), gr=g.createRadialGradient(32,32,0,32,32,32); gr.addColorStop(0,'rgba(255,255,255,1)'); gr.addColorStop(.25,'rgba(255,255,255,.55)'); gr.addColorStop(1,'rgba(255,255,255,0)'); g.fillStyle=gr; g.fillRect(0,0,64,64); }
+  const dotT=new THREE.CanvasTexture(dotC);
+  const flies=new THREE.Points(fg,new THREE.PointsMaterial({map:dotT,color:0xd8ff9a,size:.16,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false}));
+  scene.add(flies);
+
+  /* ---------- camera path ---------- */
+  const PN=360, cp=[];
+  for(let i=0;i<=PN;i++){ const t=i/PN, z=Z0+(Z1-Z0)*t, x=XCs(z); cp.push(new THREE.Vector3(x,Hs(x,z),z)); }
+  for(let k=0;k<6;k++) for(let i=1;i<PN;i++) cp[i].y=(cp[i-1].y+cp[i].y*2+cp[i+1].y)/4;
+  cp.forEach(p=>{ p.y=Math.max(p.y+2.1,Hs(p.x,p.z)+1.75); });
+  const curve=new THREE.CatmullRomCurve3(cp);
+
+  /* ---------- time of day ---------- */
+  const KEYS=[
+    {t:0,   el:4.5, az:206, tb:8,  ry:2.2, ex:.78, si:2.8, sc:0xffc9a2, hi:.5,  ei:.6, fog:0xc9bfae, fd:.0026, mist:.55, st:0, ff:0},
+    {t:.36, el:30,  az:178, tb:4,  ry:1.1, ex:.6,  si:3.6, sc:0xfff2e2, hi:.55, ei:.8, fog:0xaebfc6, fd:.00115,mist:.16, st:0, ff:0},
+    {t:.7,  el:3.5, az:152, tb:10, ry:2.8, ex:.72, si:2.8, sc:0xffb27a, hi:.4,  ei:.45,  fog:0xcf9a78, fd:.0016, mist:.32, st:.08,ff:.2},
+    {t:.86, el:-4,  az:146, tb:6,  ry:1.6, ex:.72, si:.6,  sc:0x9fb0d8, hi:.16, ei:.12, fog:0x2f3a4c, fd:.0018, mist:.16, st:.6, ff:.8},
+    {t:1,   el:-16, az:140, tb:2,  ry:.5,  ex:.85, si:.5,  sc:0x9cb3e0, hi:.12, ei:.07, fog:0x151d29, fd:.0017, mist:.1,  st:1,  ff:1},
+  ];
+  const cA=new THREE.Color(), cB=new THREE.Color(), sunDir=new THREE.Vector3(), lightDir=new THREE.Vector3();
+  const mixC=(a,b,f,o)=>{ cA.setHex(a); cB.setHex(b); return o.copy(cA).lerp(cB,f); };
+  let night=0;
+  function applyTime(t){
+    let i=0; while(i<KEYS.length-2 && t>KEYS[i+1].t) i++;
+    const a=KEYS[i], b=KEYS[i+1], f=sstep(0,1,(t-a.t)/(b.t-a.t)), L=(p,q)=>p+(q-p)*f;
+    const el=L(a.el,b.el), az=L(a.az,b.az);
+    sunDir.setFromSphericalCoords(1,THREE.MathUtils.degToRad(90-el),THREE.MathUtils.degToRad(az));
+    SU.sunPosition.value.copy(sunDir); SU.turbidity.value=L(a.tb,b.tb); SU.rayleigh.value=L(a.ry,b.ry);
+    renderer.toneMappingExposure=L(a.ex,b.ex);
+    night=L(a.st,b.st);
+    // below the horizon the key light becomes moonlight from high in the sky
+    const lel=el>3?el:THREE.MathUtils.lerp(Math.max(el,3),38,sstep(3,-8,el));
+    lightDir.setFromSphericalCoords(1,THREE.MathUtils.degToRad(90-lel),THREE.MathUtils.degToRad(el>3?az:az+180*sstep(3,-8,el)));
+    sun.intensity=L(a.si,b.si); mixC(a.sc,b.sc,f,sun.color);
+    hemi.intensity=L(a.hi,b.hi); scene.environmentIntensity=L(a.ei,b.ei);
+    mixC(a.fog,b.fog,f,scene.fog.color); scene.fog.density=L(a.fd,b.fd);
+    mistMat.opacity=L(a.mist,b.mist); mistMat.color.copy(scene.fog.color).lerp(cB.setHex(0xffffff),.55);
+    stars.material.opacity=night; flies.material.opacity=L(a.ff,b.ff)*.9;
+  }
+
+  /* ---------- frame loop ---------- */
+  let tCur=scrollT(), mx=0, my=0, mxs=0, mys=0, clock=0, first=true, running=true;
+  const vPos=new THREE.Vector3(), vLook=new THREE.Vector3(), vFar=new THREE.Vector3(XCs(-1650),210,-1800);
+  addEventListener('pointermove',e=>{ mx=(e.clientX/innerWidth-.5)*2; my=(e.clientY/innerHeight-.5)*2; },{passive:true});
+  document.addEventListener('visibilitychange',()=>{ const was=running; running=!document.hidden; if(running&&!was) requestAnimationFrame(frame); });
+  worldResize=()=>{ renderer.setSize(innerWidth,innerHeight,false); camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); };
+  const clk=new THREE.Clock();
+  function frame(){
+    if(!running) return;
+    const dt=Math.min(clk.getDelta(),.05);
+    const target=scrollT();
+    tCur+=(target-tCur)*((reduce||LITE)?1:Math.min(1,dt*3.2));
+    mxs+=(mx-mxs)*.04; mys+=(my-mys)*.04;
+    if(!reduce) clock+=dt;
+    const t=tCur;
+    curve.getPointAt(Math.min(t,1),vPos);
+    curve.getPointAt(Math.min(t+.012,1),vLook);
+    const endB=sstep(.88,1,t);
+    vLook.lerp(vFar,endB*.9);
+    camera.position.set(vPos.x+mxs*.6, vPos.y+mys*.25+Math.sin(clock*1.3)*.03+endB*14, vPos.z);
+    camera.lookAt(vLook.x+mxs*3, vLook.y+.4-mys*1.2, vLook.z);
+    applyTime(t);
+    // shadow frustum follows the walker
+    sun.position.copy(camera.position).addScaledVector(lightDir,500);
+    sun.target.position.set(camera.position.x, camera.position.y, camera.position.z-55);
+    if(Q.shadows){ const sc=sun.shadow.camera; sc.updateProjectionMatrix(); }
+    // per-chunk LOD
+    const cz=camera.position.z;
+    for(const c of chunks){
+      const dz=c.zc-cz;              // >0 behind, <0 ahead
+      const nearOn=dz>-330 && dz<CH*1.2;
+      c.full.visible=nearOn; c.imp.visible=!nearOn && dz<CH;
+      c.grass.visible=dz>-170 && dz<CH*.9;
+    }
+    flies.position.set(camera.position.x,camera.position.y-2,camera.position.z-14);
+    if(!reduce) flies.rotation.y=clock*.05;
+    stars.position.copy(camera.position);
+    WIND.uTime.value=clock;
+    renderer.render(scene,camera);
+    updateHud(t);
+    if(first){ first=false; canvas.classList.add('on'); if(loader) loader.hidden=true; }
+    requestAnimationFrame(frame);
+  }
+  worldRunning=true;
+  requestAnimationFrame(frame);
+}
+
+/* ===================== ez-tree (MIT) wrapped for this page ===================== */
+function makeEZ(THREE){
+// ez-tree by Daniel Greenheck — MIT License — https://github.com/dgreenheck/ez-tree
+class RNG {
+  m_w = 123456789;
+  m_z = 987654321;
+  mask = 0xffffffff;
+
+  constructor(seed) {
+    this.m_w = (123456789 + seed) & this.mask;
+    this.m_z = (987654321 - seed) & this.mask;
+  }
+
+  /**
+   * Returns a random number between min and max
+   */
+  random(max = 1, min = 0) {
+    this.m_z = (36969 * (this.m_z & 65535) + (this.m_z >> 16)) & this.mask;
+    this.m_w = (18000 * (this.m_w & 65535) + (this.m_w >> 16)) & this.mask;
+    let result = ((this.m_z << 16) + (this.m_w & 65535)) >>> 0;
+    result /= 4294967296;
+
+    return (max - min) * result + min;
+  }
+}
+
+const Billboard = {
+  Single: 'single',
+  Double: 'double',
+};
+
+const TreeType = {
+  Deciduous: 'deciduous',
+  Evergreen: 'evergreen',
+};
+
+class Branch {
+  /**
+   * Generates a new branch
+   * @param {THREE.Vector3} origin The starting point of the branch
+   * @param {THREE.Euler} orientation The starting orientation of the branch
+   * @param {number} length The length of the branch
+   * @param {number} radius The radius of the branch at its starting point
+   */
+  constructor(
+    origin = new THREE.Vector3(),
+    orientation = new THREE.Euler(),
+    length = 0,
+    radius = 0,
+    level = 0,
+    sectionCount = 0,
+    segmentCount = 0,
+  ) {
+    this.origin = origin.clone();
+    this.orientation = orientation.clone();
+    this.length = length;
+    this.radius = radius;
+    this.level = level;
+    this.sectionCount = sectionCount;
+    this.segmentCount = segmentCount;
+  }
+}
+
+
+class TreeOptions {
+  constructor() {
+    this.seed = 0;
+    this.type = TreeType.Deciduous;
+
+    // Bark parameters
+    this.bark = {
+      // Informational identifier carried through presets. The library does not
+      // consume this field; the host app uses it to resolve which texture set
+      // to assign to `maps` below.
+      type: 'Bark001',
+
+      // Texture maps supplied by the caller. Each entry is a THREE.Texture or
+      // null. When `textured` is true, non-null maps are applied to the
+      // material; null maps fall back to the tint color for that channel.
+      maps: {
+        color: null,
+        ao: null,
+        normal: null,
+        roughness: null,
+      },
+
+      // Tint of the tree trunk
+      tint: 0xffffff,
+
+      // Use face normals for shading instead of vertex normals
+      flatShading: false,
+
+      // Apply texture to bark
+      textured: true,
+
+      // Scale for the texture
+      textureScale: { x: 1, y: 1 },
+    };
+
+    // Branch parameters
+    this.branch = {
+      // Number of branch recursion levels. 0 = trunk only
+      levels: 3,
+
+      // Angle of the child branches relative to the parent branch (degrees)
+      angle: {
+        1: 70,
+        2: 60,
+        3: 60,
+      },
+
+      // Number of children per branch level
+      children: {
+        0: 7,
+        1: 7,
+        2: 5,
+      },
+
+      // External force encouraging tree growth in a particular direction
+      force: {
+        direction: { x: 0, y: 1, z: 0 },
+        strength: 0.01,
+      },
+
+      // Amount of curling/twisting at each branch level
+      gnarliness: {
+        0: 0.15,
+        1: 0.2,
+        2: 0.3,
+        3: 0.02,
+      },
+
+      // Length of each branch level
+      length: {
+        0: 20,
+        1: 20,
+        2: 10,
+        3: 1,
+      },
+
+      // Radius of each branch level
+      radius: {
+        0: 1.5,
+        1: 0.7,
+        2: 0.7,
+        3: 0.7,
+      },
+
+      // Number of sections per branch level
+      sections: {
+        0: 12,
+        1: 10,
+        2: 8,
+        3: 6,
+      },
+
+      // Number of radial segments per branch level
+      segments: {
+        0: 8,
+        1: 6,
+        2: 4,
+        3: 3,
+      },
+
+      // Defines where child branches start forming on the parent branch
+      start: {
+        1: 0.4,
+        2: 0.3,
+        3: 0.3,
+      },
+
+      // Taper at each branch level
+      taper: {
+        0: 0.7,
+        1: 0.7,
+        2: 0.7,
+        3: 0.7,
+      },
+
+      // Amount of twist at each branch level
+      twist: {
+        0: 0,
+        1: 0,
+        2: 0,
+        3: 0,
+      },
+    };
+
+    // Leaf parameters
+    this.leaves = {
+      // Informational identifier (e.g. 'oak', 'ash'). Library does not consume
+      // it; the host app uses it to resolve which texture to assign to `map`.
+      type: 'oak',
+
+      // Color map supplied by the caller. THREE.Texture or null.
+      // When null, leaves render as a flat tinted quad.
+      map: null,
+
+      // Whether to use single or double/perpendicular billboards
+      billboard: Billboard.Double,
+
+      // Angle of leaves relative to parent branch (degrees)
+      angle: 10,
+
+      // Number of leaves
+      count: 1,
+
+      // Where leaves start to grow on the length of the branch (0 to 1)
+      start: 0,
+
+      // Size of the leaves
+      size: 2.5,
+
+      // Variance in leaf size between each instance
+      sizeVariance: 0.7,
+
+      // Tint color for the leaves
+      tint: 0xffffff,
+
+      // Controls transparency of leaf texture
+      alphaTest: 0.5,
+
+      // Calculates custom normals to imply a rounded canopy shape
+      roundedNormals: true,
+    };
+
+    // Trellis parameters
+    this.trellis = {
+      // Whether trellis is enabled
+      enabled: false,
+
+      // Position of trellis (z is distance from tree)
+      position: { x: 0, y: 0, z: -2 },
+
+      // Width of trellis grid (X direction)
+      width: 10,
+
+      // Height of trellis grid (Y direction)
+      height: 20,
+
+      // Distance between grid lines
+      spacing: 2,
+
+      // Force parameters
+      force: {
+        // How strongly branches bend toward trellis
+        strength: 0.02,
+        // Maximum distance at which trellis affects branches
+        maxDistance: 3,
+        // Distance falloff exponent (1 = linear, 2 = quadratic)
+        falloff: 1,
+      },
+
+      // Radius of trellis cylinders
+      cylinderRadius: 0.05,
+
+      // Whether to show trellis geometry
+      visible: true,
+
+      // Color of trellis
+      color: 0x8b4513,
+    };
+  }
+
+  /**
+   * Copies the values from source into this object
+   * @param {TreeOptions} source 
+   */
+  copy(source, target = this) {
+    for (let key in source) {
+      if (source.hasOwnProperty(key) && target.hasOwnProperty(key)) {
+        const value = source[key];
+        // Assign THREE.Texture (and any non-plain object) by reference rather
+        // than recursing — recursion would walk a Texture's internals.
+        if (value !== null && typeof value === 'object' && value.constructor === Object) {
+          this.copy(value, target[key]);
+        } else {
+          target[key] = value;
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Trellis structure for guiding tree branch growth
+ * Creates a grid of cylinders that branches can be attracted to
+ */
+class Trellis extends THREE.Group {
+  /**
+   * @param {Object} options Trellis configuration
+   */
+  constructor(options) {
+    super();
+    this.name = 'Trellis';
+    this.options = options;
+    this.material = null;
+    this.hCylinderGeo = null;
+    this.vCylinderGeo = null;
+  }
+
+  /**
+   * Generate the trellis geometry
+   */
+  generate() {
+    const t = this.options;
+
+    // Clear existing geometry
+    this.dispose();
+
+    this.material = new THREE.MeshStandardMaterial({
+      color: t.color,
+      roughness: 0.8,
+    });
+
+    // Create shared cylinder geometries
+    this.hCylinderGeo = new THREE.CylinderGeometry(
+      t.cylinderRadius,
+      t.cylinderRadius,
+      t.width,
+      8
+    );
+    this.hCylinderGeo.rotateZ(Math.PI / 2);
+
+    this.vCylinderGeo = new THREE.CylinderGeometry(
+      t.cylinderRadius,
+      t.cylinderRadius,
+      t.height,
+      8
+    );
+
+    // Horizontal lines
+    const hLineCount = Math.floor(t.height / t.spacing) + 1;
+    for (let i = 0; i < hLineCount; i++) {
+      const y = i * t.spacing;
+      const mesh = new THREE.Mesh(this.hCylinderGeo, this.material);
+      mesh.position.set(t.position.x, t.position.y + y, t.position.z);
+      this.add(mesh);
+    }
+
+    // Vertical lines
+    const vLineCount = Math.floor(t.width / t.spacing) + 1;
+    for (let i = 0; i < vLineCount; i++) {
+      const x = -t.width / 2 + i * t.spacing;
+      const mesh = new THREE.Mesh(this.vCylinderGeo, this.material);
+      mesh.position.set(t.position.x + x, t.position.y + t.height / 2, t.position.z);
+      this.add(mesh);
+    }
+  }
+
+  /**
+   * Find the nearest point on the trellis grid to a given position
+   * @param {THREE.Vector3} position
+   * @returns {THREE.Vector3}
+   */
+  getNearestPoint(position) {
+    const t = this.options;
+    const trellisX = t.position.x;
+    const trellisY = t.position.y;
+    const trellisZ = t.position.z;
+
+    // Trellis bounds
+    const minX = trellisX - t.width / 2;
+    const maxX = trellisX + t.width / 2;
+    const minY = trellisY;
+    const maxY = trellisY + t.height;
+
+    // Clamp position to trellis bounds for projection
+    const clampedX = Math.max(minX, Math.min(maxX, position.x));
+    const clampedY = Math.max(minY, Math.min(maxY, position.y));
+
+    // Find nearest horizontal line (Y = constant)
+    const nearestHLineY = Math.round((clampedY - minY) / t.spacing) * t.spacing + minY;
+    const finalHLineY = Math.max(minY, Math.min(maxY, nearestHLineY));
+
+    // Find nearest vertical line (X = constant)
+    const nearestVLineX = Math.round((clampedX - minX) / t.spacing) * t.spacing + minX;
+    const finalVLineX = Math.max(minX, Math.min(maxX, nearestVLineX));
+
+    // Point on nearest horizontal line (X can vary along the line)
+    const pointOnHLine = new THREE.Vector3(clampedX, finalHLineY, trellisZ);
+
+    // Point on nearest vertical line (Y can vary along the line)
+    const pointOnVLine = new THREE.Vector3(finalVLineX, clampedY, trellisZ);
+
+    // Return whichever is closer
+    const distH = position.distanceTo(pointOnHLine);
+    const distV = position.distanceTo(pointOnVLine);
+
+    return distH < distV ? pointOnHLine : pointOnVLine;
+  }
+
+  /**
+   * Clean up geometry and materials
+   */
+  dispose() {
+    this.children.forEach(child => {
+      if (child.geometry) {
+        child.geometry = null;
+      }
+    });
+    this.clear();
+
+    if (this.hCylinderGeo) {
+      this.hCylinderGeo.dispose();
+      this.hCylinderGeo = null;
+    }
+    if (this.vCylinderGeo) {
+      this.vCylinderGeo.dispose();
+      this.vCylinderGeo = null;
+    }
+    if (this.material) {
+      this.material.dispose();
+      this.material = null;
+    }
+  }
+}
+
+const TreePreset={"Pine Small": {"seed": 11744, "type": "evergreen", "bark": {"type": "Bark003", "tint": 16777215, "flatShading": false, "textured": true, "textureScale": {"x": 1, "y": 1}}, "branch": {"levels": 1, "angle": {"1": 117, "2": 60, "3": 60}, "children": {"0": 91, "1": 7, "2": 5}, "force": {"direction": {"x": 0, "y": 1, "z": 0}, "strength": 0}, "gnarliness": {"0": 0.05, "1": 0.08, "2": 0, "3": 0}, "length": {"0": 39.55, "1": 12.12, "2": 10, "3": 1}, "radius": {"0": 0.55, "1": 0.41, "2": 0.7, "3": 0.7}, "sections": {"0": 12, "1": 10, "2": 8, "3": 6}, "segments": {"0": 8, "1": 6, "2": 4, "3": 3}, "start": {"1": 0.16, "2": 0.3, "3": 0.3}, "taper": {"0": 0.7, "1": 0.7, "2": 0.7, "3": 0.7}, "twist": {"0": 0, "1": 0, "2": 0, "3": 0}}, "leaves": {"type": "pine", "billboard": "double", "angle": 10, "count": 21, "start": 0, "size": 0.965, "sizeVariance": 0.7, "tint": 16777215, "alphaTest": 0.3}, "trellis": {"enabled": false}}, "Pine Medium": {"seed": 13977, "type": "evergreen", "bark": {"type": "Bark003", "tint": 16777215, "flatShading": false, "textured": true, "textureScale": {"x": 1, "y": 1}}, "branch": {"levels": 1, "angle": {"1": 110, "2": 16, "3": 60}, "children": {"0": 82, "1": 3, "2": 5}, "force": {"direction": {"x": 0, "y": 1, "z": 0}, "strength": -0.003}, "gnarliness": {"0": 0.05, "1": 0.08, "2": 0, "3": 0}, "length": {"0": 50, "1": 23.87, "2": 14.08, "3": 1}, "radius": {"0": 1.05, "1": 0.36, "2": 0.7, "3": 0.7}, "sections": {"0": 12, "1": 10, "2": 8, "3": 6}, "segments": {"0": 8, "1": 6, "2": 4, "3": 3}, "start": {"1": 0.27, "2": 0.14, "3": 0.3}, "taper": {"0": 0.7, "1": 0.7, "2": 0.7, "3": 0.7}, "twist": {"0": 0, "1": 0, "2": 0, "3": 0}}, "leaves": {"type": "pine", "billboard": "double", "angle": 39, "count": 30, "start": 0.09, "size": 1.435, "sizeVariance": 0.201, "tint": 16777215, "alphaTest": 0.3}, "trellis": {"enabled": false}}, "Pine Large": {"seed": 44166, "type": "evergreen", "bark": {"type": "Bark003", "tint": 16777215, "flatShading": false, "textured": true, "textureScale": {"x": 1, "y": 1}}, "branch": {"levels": 1, "angle": {"1": 129.1304347826087, "2": 16, "3": 60}, "children": {"0": 100, "1": 3, "2": 0}, "force": {"direction": {"x": 0, "y": 1, "z": 0}, "strength": 0.009000000000000001}, "gnarliness": {"0": 0.05, "1": 0.08, "2": 0, "3": 0}, "length": {"0": 65.25217391304348, "1": 34.84782608695652, "2": 27.246739130434783, "3": 1}, "radius": {"0": 1.271739130434783, "1": 0.366304347826087, "2": 0.7, "3": 0.7}, "sections": {"0": 12, "1": 10, "2": 8, "3": 6}, "segments": {"0": 8, "1": 6, "2": 4, "3": 3}, "start": {"1": 0.29347826086956524, "2": 0.14, "3": 0.3}, "taper": {"0": 0.7, "1": 0.7, "2": 0.7, "3": 0.7}, "twist": {"0": 0, "1": 0, "2": 0, "3": 0}}, "leaves": {"type": "pine", "billboard": "double", "angle": 17, "count": 18, "start": 0.07608695652173914, "size": 2.608695652173913, "sizeVariance": 0.201, "tint": 16777215, "alphaTest": 0.3}, "trellis": {"enabled": false}}};
+function loadPreset(name){const p=TreePreset[name];return p?structuredClone(p):new TreeOptions();}
+
+class Tree extends THREE.Group {
+  /**
+   * @type {RNG}
+   */
+  rng;
+
+  /**
+   * @type {TreeOptions}
+   */
+  options;
+
+  /**
+   * @type {Branch[]}
+   */
+  branchQueue = [];
+
+  /**
+   * @param {TreeOptions} params
+   */
+  constructor(options = new TreeOptions()) {
+    super();
+    this.name = 'Tree';
+    this.branchesMesh = new THREE.Mesh();
+    this.leavesMesh = new THREE.Mesh();
+    this.trellisMesh = null;
+    this.lod = null;
+    this.skeleton = null;
+    this.add(this.branchesMesh);
+    this.add(this.leavesMesh);
+    this.options = options;
+  }
+
+  update(elapsedTime) {
+    const leafShader = this.leavesMesh.material.userData.shader;
+    if (leafShader) {
+      leafShader.uniforms.uTime.value = elapsedTime;
+    }
+  }
+
+  /**
+   * Loads a preset tree from JSON 
+   * @param {string} preset 
+   */
+  loadPreset(name) {
+    const json = loadPreset(name);
+    this.loadFromJson(json);
+  }
+
+  /**
+   * Loads a tree from JSON
+   * @param {TreeOptions} json 
+   */
+  loadFromJson(json) {
+    this.options.copy(json);
+    this.generate();
+  }
+
+  /**
+   * @typedef {Object} LODDetail
+   * @property {number} [sectionStride=1] Sample every Nth section ring; the
+   *   first and last rings are always kept so branch endpoints stay put
+   * @property {number} [segmentFactor=1] Radial segment multiplier;
+   *   segments = max(3, round(segmentCount * segmentFactor))
+   * @property {number} [leafStride=1] Keep every Nth leaf
+   * @property {number} [leafScale=1] Size multiplier for the kept leaves,
+   *   typically 1/sqrt(kept fraction) to preserve canopy coverage
+   * @property {string} [billboard] Billboard mode override for this level
+   *   ('single' or 'double'); defaults to options.leaves.billboard
+   */
+
+  /**
+   * @typedef {Object} LODLevel
+   * @property {number} distance Camera distance at which this level activates
+   * @property {number} [hysteresis] Switch hysteresis as a fraction of distance
+   * @property {LODDetail} [detail] Meshing detail for this level
+   */
+
+  /**
+   * Default levels for generateLODs(). LOD1 is roughly 40% of the full
+   * triangle count, LOD2 roughly 20%.
+   * @type {LODLevel[]}
+   */
+  static defaultLODLevels = [
+    { distance: 0, detail: {} },
+    {
+      distance: 100,
+      hysteresis: 0.05,
+      detail: {
+        sectionStride: 3,
+        segmentFactor: 0.75,
+        leafStride: 2,
+        // Slightly under the area-preserving sqrt(2): individual leaves are
+        // still resolvable at this distance, so a full compensation reads as
+        // "bigger leaves" rather than "same canopy".
+        leafScale: 1.25,
+      },
+    },
+    {
+      distance: 250,
+      hysteresis: 0.05,
+      detail: {
+        sectionStride: 6,
+        segmentFactor: 0.4,
+        leafStride: 2,
+        // Deliberately under-compensated: full coverage compensation for the
+        // thinning + single billboard would need 2x scale, which reads as
+        // balloon leaves. A slightly sparser canopy with natural-size leaves
+        // looks better at this distance (fogged, 250+ units in the demo).
+        leafScale: 1.3,
+        billboard: Billboard.Single,
+      },
+    },
+  ];
+
+  /**
+   * Generate a new tree
+   */
+  generate() {
+    this.#clearLOD();
+    this.#generateSkeleton();
+
+    const buffers = this.#meshSkeleton();
+    this.branches = buffers.branches;
+    this.leaves = buffers.leaves;
+
+    this.createBranchesGeometry();
+    this.createLeavesGeometry();
+    this.createTrellis();
+  }
+
+  /**
+   * Generates the tree as a set of levels of detail hosted in a THREE.LOD
+   * object inside this group. The renderer switches levels automatically
+   * based on camera distance. All levels share one bark and one leaf
+   * material, so update() animates wind at every level.
+   * @param {LODLevel[]} levels Level descriptors, in any order
+   */
+  generateLODs(levels = Tree.defaultLODLevels) {
+    this.#clearLOD();
+    this.#generateSkeleton();
+
+    const barkMaterial = this.#createBarkMaterial();
+    const leafMaterial = this.#createLeafMaterial();
+
+    this.lod = new THREE.LOD();
+    this.lod.name = 'TreeLOD';
+
+    // THREE.LOD sorts its levels by distance internally, so sort here too and
+    // let the nearest level own the reused meshes regardless of input order.
+    const ordered = [...levels].sort(
+      (a, b) => (a.distance ?? 0) - (b.distance ?? 0),
+    );
+
+    ordered.forEach((level, index) => {
+      const buffers = this.#meshSkeleton(level.detail ?? {});
+
+      let branchesMesh, leavesMesh;
+      if (index === 0) {
+        // Reuse the existing meshes for the closest level so update(),
+        // traversal and the vertex/triangle count getters keep working.
+        this.branches = buffers.branches;
+        this.leaves = buffers.leaves;
+        branchesMesh = this.branchesMesh;
+        leavesMesh = this.leavesMesh;
+        branchesMesh.geometry.dispose();
+        branchesMesh.material.dispose();
+        leavesMesh.geometry.dispose();
+        leavesMesh.material.dispose();
+      } else {
+        branchesMesh = new THREE.Mesh();
+        leavesMesh = new THREE.Mesh();
+      }
+
+      branchesMesh.geometry = this.#buildBufferGeometry(buffers.branches);
+      branchesMesh.material = barkMaterial;
+      leavesMesh.geometry = this.#buildBufferGeometry(buffers.leaves);
+      leavesMesh.material = leafMaterial;
+
+      for (const mesh of [branchesMesh, leavesMesh]) {
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+      }
+
+      const group = new THREE.Group();
+      group.add(branchesMesh, leavesMesh);
+      this.lod.addLevel(group, level.distance ?? 0, level.hysteresis ?? 0);
+    });
+
+    this.add(this.lod);
+    this.createTrellis();
+  }
+
+  /**
+   * Builds branch and leaf geometry at the given detail level without
+   * modifying the tree's own meshes. Useful for external instancing or
+   * custom LOD systems. Reuses the current skeleton, generating one first
+   * if none exists.
+   * @param {LODDetail} detail
+   * @returns {{ branches: THREE.BufferGeometry, leaves: THREE.BufferGeometry }}
+   */
+  createGeometry(detail = {}) {
+    if (!this.skeleton) {
+      this.#generateSkeleton();
+    }
+    const buffers = this.#meshSkeleton(detail);
+    return {
+      branches: this.#buildBufferGeometry(buffers.branches),
+      leaves: this.#buildBufferGeometry(buffers.leaves),
+    };
+  }
+
+  /**
+   * Tears down any LOD state and restores the flat branches/leaves meshes
+   * as direct children, so generate() behaves as if LODs never existed.
+   */
+  #clearLOD() {
+    if (!this.lod) return;
+
+    this.lod.levels.forEach((level) => {
+      for (const mesh of level.object.children) {
+        // One level reuses branchesMesh/leavesMesh; their geometry and the
+        // shared materials are disposed by whichever generate path runs next.
+        if (mesh === this.branchesMesh || mesh === this.leavesMesh) continue;
+        mesh.geometry.dispose();
+      }
+    });
+
+    this.remove(this.lod);
+    this.lod = null;
+    this.add(this.branchesMesh, this.leavesMesh);
+  }
+
+  /**
+   * Grows the tree skeleton: the section frames of every branch and the
+   * placement of every leaf. All RNG consumption happens here, so any
+   * number of meshing passes can run against one skeleton without changing
+   * the tree's shape.
+   */
+  #generateSkeleton() {
+    this.skeleton = {
+      branches: [],
+      leaves: [],
+    };
+
+    this.rng = new RNG(this.options.seed);
+
+    // Create the trunk of the tree first
+    this.branchQueue.push(
+      new Branch(
+        new THREE.Vector3(),
+        new THREE.Euler(),
+        this.options.branch.length[0],
+        this.options.branch.radius[0],
+        0,
+        this.options.branch.sections[0],
+        this.options.branch.segments[0],
+      ),
+    );
+
+    while (this.branchQueue.length > 0) {
+      const branch = this.branchQueue.shift();
+      this.#growBranch(branch);
+    }
+  }
+
+  /**
+   * Meshes the current skeleton into geometry buffers at the given detail.
+   * Consumes no RNG, so it can run repeatedly with different detail specs.
+   * @param {LODDetail} detail
+   */
+  #meshSkeleton(detail = {}) {
+    const sectionStride = Math.max(1, Math.floor(detail.sectionStride ?? 1));
+    const segmentFactor = detail.segmentFactor ?? 1;
+    const leafStride = Math.max(1, Math.floor(detail.leafStride ?? 1));
+    const leafScale = detail.leafScale ?? 1;
+    const billboard = detail.billboard ?? this.options.leaves.billboard;
+
+    const branches = {
+      verts: [],
+      normals: [],
+      indices: [],
+      uvs: [],
+      windFactor: []
+    };
+
+    const leaves = {
+      verts: [],
+      normals: [],
+      indices: [],
+      uvs: [],
+    };
+
+    for (const skeletonBranch of this.skeleton.branches) {
+      this.#meshBranch(branches, skeletonBranch, sectionStride, segmentFactor);
+    }
+
+    for (let i = 0; i < this.skeleton.leaves.length; i += leafStride) {
+      this.#meshLeaf(leaves, this.skeleton.leaves[i], leafScale, billboard);
+    }
+
+    return { branches, leaves };
+  }
+
+  /**
+   * Grows a branch's skeleton, queueing child branches and recording leaf
+   * placements. Consumes RNG in the exact order of the original interleaved
+   * generator so seeds keep producing identical trees.
+   * @param {Branch} branch
+   * @returns
+   */
+  #growBranch(branch) {
+    let sectionOrientation = branch.orientation.clone();
+    let sectionOrigin = branch.origin.clone();
+    let sectionLength =
+      branch.length /
+      branch.sectionCount /
+      (this.options.type === 'Deciduous' ? this.options.branch.levels - 1 : 1);
+
+    // This information is used for generating child branches after the branch
+    // geometry has been constructed
+    let sections = [];
+
+    for (let i = 0; i <= branch.sectionCount; i++) {
+      let sectionRadius = branch.radius;
+
+      // If final section of final level, set radius to effecively zero
+      if (
+        i === branch.sectionCount &&
+        branch.level === this.options.branch.levels
+      ) {
+        sectionRadius = 0.001;
+      } else if (this.options.type === TreeType.Deciduous) {
+        sectionRadius *=
+          1 - this.options.branch.taper[branch.level] * (i / branch.sectionCount);
+      } else if (this.options.type === TreeType.Evergreen) {
+        // Evergreens do not have a terminal branch so they have a taper of 1
+        sectionRadius *= 1 - (i / branch.sectionCount);
+      }
+
+      // Use this information later on when generating child branches
+      sections.push({
+        origin: sectionOrigin.clone(),
+        orientation: sectionOrientation.clone(),
+        radius: sectionRadius,
+      });
+
+      sectionOrigin.add(
+        new THREE.Vector3(0, sectionLength, 0).applyEuler(sectionOrientation),
+      );
+
+      // Perturb the orientation of the next section randomly. The higher the
+      // gnarliness, the larger potential perturbation
+      const gnarliness =
+        Math.max(1, 1 / Math.sqrt(sectionRadius)) *
+        this.options.branch.gnarliness[branch.level];
+
+      sectionOrientation.x += this.rng.random(gnarliness, -gnarliness);
+      sectionOrientation.z += this.rng.random(gnarliness, -gnarliness);
+
+      // Apply growth force to the branch
+      const qSection = new THREE.Quaternion().setFromEuler(sectionOrientation);
+
+      const qTwist = new THREE.Quaternion().setFromAxisAngle(
+        new THREE.Vector3(0, 1, 0),
+        this.options.branch.twist[branch.level],
+      );
+
+      qSection.multiply(qTwist);
+
+      // Rotate the section's growth direction toward force.direction (positive
+      // strength) or away from it (negative). The (sectionUp × target) axis
+      // makes force.direction behave as a real world axis: when sectionUp is
+      // already aligned with target the rotation is zero, so a vertical trunk
+      // with force=(0,1,0) doesn't get gnarliness drift amplified — the old
+      // slerp form was degenerate at qForce=identity and pushed branches in
+      // whatever random direction the section had drifted.
+      const sectionUp = new THREE.Vector3(0, 1, 0).applyQuaternion(qSection);
+      const target = new THREE.Vector3()
+        .copy(this.options.branch.force.direction)
+        .normalize();
+      const axis = new THREE.Vector3().crossVectors(sectionUp, target);
+      const sinFull = axis.length();
+      if (sinFull > 1e-6) {
+        axis.divideScalar(sinFull);
+        const fullAngle = Math.atan2(sinFull, sectionUp.dot(target));
+        const step = this.options.branch.force.strength / sectionRadius;
+        const clamped = Math.max(-fullAngle, Math.min(fullAngle, step));
+        qSection.premultiply(
+          new THREE.Quaternion().setFromAxisAngle(axis, clamped),
+        );
+      }
+
+      // Apply trellis force if enabled
+      if (this.options.trellis.enabled) {
+        const trellisResult = this.calculateTrellisForce(sectionOrigin, sectionRadius);
+        if (trellisResult) {
+          const qTrellis = new THREE.Quaternion().setFromUnitVectors(
+            new THREE.Vector3(0, 1, 0),
+            trellisResult.direction,
+          );
+          qSection.rotateTowards(qTrellis, trellisResult.strength);
+        }
+      }
+
+      sectionOrientation.setFromQuaternion(qSection);
+    }
+
+    this.skeleton.branches.push({
+      sections,
+      segmentCount: branch.segmentCount,
+      baseRadius: branch.radius,
+    });
+
+    // Deciduous trees have a terminal branch that grows out of the
+    // end of the parent branch
+    if (this.options.type === 'deciduous') {
+      const lastSection = sections[sections.length - 1];
+
+      if (branch.level < this.options.branch.levels) {
+        this.branchQueue.push(
+          new Branch(
+            lastSection.origin,
+            lastSection.orientation,
+            this.options.branch.length[branch.level + 1],
+            lastSection.radius,
+            branch.level + 1,
+            // Section count and segment count must be same as parent branch
+            // since the child branch is growing from the end of the parent branch
+            branch.sectionCount,
+            branch.segmentCount,
+          ),
+        );
+      } else {
+        this.#recordLeaf(lastSection.origin, lastSection.orientation);
+      }
+    }
+
+    // If we are on the last branch level, generate leaves
+    if (branch.level === this.options.branch.levels) {
+      this.generateLeaves(sections);
+    } else if (branch.level < this.options.branch.levels) {
+      this.generateChildBranches(
+        this.options.branch.children[branch.level],
+        branch.level + 1,
+        sections);
+    }
+  }
+
+  /**
+   * Generate branches from a parent branch
+   * @param {number} count The number of child branches to generate
+   * @param {number} level The level of the child branches
+   * @param {{
+   *  origin: THREE.Vector3,
+   *  orientation: THREE.Euler,
+   *  radius: number
+   * }[]} sections The parent branch's sections
+   * @returns
+   */
+  generateChildBranches(count, level, sections) {
+    const radialOffset = this.rng.random();
+    const startMin = this.options.branch.start[level];
+    const heightStep = (1.0 - startMin) / count;
+    const angleSlots = this.shuffledIndices(count);
+
+    for (let i = 0; i < count; i++) {
+      // Stratified sampling along the parent's length: jitter within slot [i, i+1]
+      // so children are spread evenly but not perfectly periodic.
+      let childBranchStart = startMin + (i + this.rng.random()) * heightStep;
+
+      // Find which sections are on either side of the child branch origin point
+      // so we can determine the origin, orientation and radius of the branch
+      const sectionIndex = Math.floor(childBranchStart * (sections.length - 1));
+      let sectionA, sectionB;
+      sectionA = sections[sectionIndex];
+      if (sectionIndex === sections.length - 1) {
+        sectionB = sectionA;
+      } else {
+        sectionB = sections[sectionIndex + 1];
+      }
+
+      // Find normalized distance from section A to section B (0 to 1)
+      const alpha =
+        (childBranchStart - sectionIndex / (sections.length - 1)) /
+        (1 / (sections.length - 1));
+
+      // Linearly interpolate origin from section A to section B
+      const childBranchOrigin = new THREE.Vector3().lerpVectors(
+        sectionA.origin,
+        sectionB.origin,
+        alpha,
+      );
+
+      // Linearly interpolate radius
+      const childBranchRadius =
+        this.options.branch.radius[level] *
+        ((1 - alpha) * sectionA.radius + alpha * sectionB.radius);
+
+      // Linearlly interpolate the orientation
+      const qA = new THREE.Quaternion().setFromEuler(sectionA.orientation);
+      const qB = new THREE.Quaternion().setFromEuler(sectionB.orientation);
+      const parentOrientation = new THREE.Euler().setFromQuaternion(
+        qB.slerp(qA, alpha),
+      );
+
+      // Stratified radial angle: each child gets a 2π/count slot, jittered ±½ slot.
+      // angleSlots[i] randomly permutes slot assignment so that the height slot
+      // and angle slot are uncorrelated — otherwise evergreens (where branch
+      // length depends on height) spiral their longest branches to a fixed side.
+      const radialJitter = this.rng.random(0.5, -0.5);
+      const radialAngle = 2.0 * Math.PI * (radialOffset + (angleSlots[i] + radialJitter) / count);
+      const q1 = new THREE.Quaternion().setFromAxisAngle(
+        new THREE.Vector3(1, 0, 0),
+        this.options.branch.angle[level] / (180 / Math.PI),
+      );
+      const q2 = new THREE.Quaternion().setFromAxisAngle(
+        new THREE.Vector3(0, 1, 0),
+        radialAngle,
+      );
+      const q3 = new THREE.Quaternion().setFromEuler(parentOrientation);
+
+      const childBranchOrientation = new THREE.Euler().setFromQuaternion(
+        q3.multiply(q2.multiply(q1)),
+      );
+
+      let childBranchLength =
+        this.options.branch.length[level] *
+        (this.options.type === TreeType.Evergreen
+          ? 1.0 - childBranchStart
+          : 1.0);
+
+      this.branchQueue.push(
+        new Branch(
+          childBranchOrigin,
+          childBranchOrientation,
+          childBranchLength,
+          childBranchRadius,
+          level,
+          this.options.branch.sections[level],
+          this.options.branch.segments[level],
+        ),
+      );
+    }
+  }
+
+  /**
+   * Logic for spawning child branches from a parent branch's section
+   * @param {{
+  *  origin: THREE.Vector3,
+  *  orientation: THREE.Euler,
+  *  radius: number
+  * }[]} sections The parent branch's sections
+  * @returns
+  */
+  generateLeaves(sections) {
+    const radialOffset = this.rng.random();
+    const count = this.options.leaves.count;
+    const startMin = this.options.leaves.start;
+    const heightStep = (1.0 - startMin) / count;
+    const angleSlots = this.shuffledIndices(count);
+
+    for (let i = 0; i < count; i++) {
+      // Stratified sampling along the parent's length.
+      let leafStart = startMin + (i + this.rng.random()) * heightStep;
+
+      // Find which sections are on either side of the child branch origin point
+      // so we can determine the origin, orientation and radius of the branch
+      const sectionIndex = Math.floor(leafStart * (sections.length - 1));
+      let sectionA, sectionB;
+      sectionA = sections[sectionIndex];
+      if (sectionIndex === sections.length - 1) {
+        sectionB = sectionA;
+      } else {
+        sectionB = sections[sectionIndex + 1];
+      }
+
+      // Find normalized distance from section A to section B (0 to 1)
+      const alpha =
+        (leafStart - sectionIndex / (sections.length - 1)) /
+        (1 / (sections.length - 1));
+
+      // Linearly interpolate origin from section A to section B
+      const leafOrigin = new THREE.Vector3().lerpVectors(
+        sectionA.origin,
+        sectionB.origin,
+        alpha,
+      );
+
+      // Linearlly interpolate the orientation
+      const qA = new THREE.Quaternion().setFromEuler(sectionA.orientation);
+      const qB = new THREE.Quaternion().setFromEuler(sectionB.orientation);
+      const parentOrientation = new THREE.Euler().setFromQuaternion(
+        qB.slerp(qA, alpha),
+      );
+
+      // Stratified radial angle with permuted slot assignment.
+      // See generateChildBranches for rationale.
+      const radialJitter = this.rng.random(0.5, -0.5);
+      const radialAngle = 2.0 * Math.PI * (radialOffset + (angleSlots[i] + radialJitter) / count);
+      const q1 = new THREE.Quaternion().setFromAxisAngle(
+        new THREE.Vector3(1, 0, 0),
+        this.options.leaves.angle / (180 / Math.PI),
+      );
+      const q2 = new THREE.Quaternion().setFromAxisAngle(
+        new THREE.Vector3(0, 1, 0),
+        radialAngle,
+      );
+      const q3 = new THREE.Quaternion().setFromEuler(parentOrientation);
+
+      const leafOrientation = new THREE.Euler().setFromQuaternion(
+        q3.multiply(q2.multiply(q1)),
+      );
+
+      this.#recordLeaf(leafOrigin, leafOrientation);
+    }
+  }
+
+  /**
+  * Records a leaf placement in the skeleton. The size variance is sampled
+  * here so the meshing passes stay RNG-free.
+  * @param {THREE.Vector3} origin The starting point of the leaf
+  * @param {THREE.Euler} orientation The orientation of the leaf
+  */
+  #recordLeaf(origin, orientation) {
+    const size =
+      this.options.leaves.size *
+      (1 +
+        this.rng.random(
+          this.options.leaves.sizeVariance,
+          -this.options.leaves.sizeVariance,
+        ));
+
+    this.skeleton.leaves.push({
+      origin: origin.clone(),
+      orientation: orientation.clone(),
+      size,
+    });
+  }
+
+  /**
+  * Emits the quad geometry for one skeleton leaf into the buffers
+  * @param {{verts: number[], normals: number[], indices: number[], uvs: number[]}} buffers
+  * @param {{origin: THREE.Vector3, orientation: THREE.Euler, size: number}} leaf
+  * @param {number} scale Size multiplier for this detail level
+  * @param {string} billboard Billboard mode for this detail level
+  */
+  #meshLeaf(buffers, leaf, scale, billboard) {
+    let i = buffers.verts.length / 3;
+
+    const { origin, orientation } = leaf;
+
+    // Width and length of the leaf quad
+    const leafSize = leaf.size * scale;
+
+    const W = leafSize;
+    const L = leafSize;
+
+    const createLeaf = (rotation) => {
+      // Create quad vertices
+      const v = [
+        new THREE.Vector3(-W / 2, L, 0),
+        new THREE.Vector3(-W / 2, 0, 0),
+        new THREE.Vector3(W / 2, 0, 0),
+        new THREE.Vector3(W / 2, L, 0),
+      ].map((v) =>
+        v
+          .applyEuler(new THREE.Euler(0, rotation, 0))
+          .applyEuler(orientation)
+          .add(origin),
+      );
+
+      buffers.verts.push(
+        v[0].x,
+        v[0].y,
+        v[0].z,
+        v[1].x,
+        v[1].y,
+        v[1].z,
+        v[2].x,
+        v[2].y,
+        v[2].z,
+        v[3].x,
+        v[3].y,
+        v[3].z,
+      );
+
+      const n = new THREE.Vector3(0, 0, 1).applyEuler(orientation);
+
+      // The normal vectors are an average of the direction of the leaf and the directions to the individual vertices.
+      // This creates a nice rounded shape while maintaining the canopy shape as a whole.
+      const roundedNormals = this.options.leaves.roundedNormals;
+      let n1 = roundedNormals ? new THREE.Vector3().copy(n).add(v[0]).sub(origin).normalize() : n;
+      let n2 = roundedNormals ? new THREE.Vector3().copy(n).add(v[1]).sub(origin).normalize() : n;
+      let n3 = roundedNormals ? new THREE.Vector3().copy(n).add(v[2]).sub(origin).normalize() : n;
+      let n4 = roundedNormals ? new THREE.Vector3().copy(n).add(v[3]).sub(origin).normalize() : n;
+
+      buffers.normals.push(
+        n1.x,
+        n1.y,
+        n1.z,
+        n2.x,
+        n2.y,
+        n2.z,
+        n3.x,
+        n3.y,
+        n3.z,
+        n4.x,
+        n4.y,
+        n4.z,
+      );
+      buffers.uvs.push(0, 1, 0, 0, 1, 0, 1, 1);
+      buffers.indices.push(i, i + 1, i + 2, i, i + 2, i + 3);
+      i += 4;
+    };
+
+    createLeaf(0);
+    if (billboard === Billboard.Double) {
+      createLeaf(Math.PI / 2);
+    }
+  }
+
+  /**
+   * Fisher-Yates shuffle of [0..count-1] using the tree's RNG so results stay
+   * seed-reproducible.
+   * @param {number} count
+   * @returns {number[]}
+   */
+  shuffledIndices(count) {
+    const arr = Array.from({ length: count }, (_, k) => k);
+    for (let k = count - 1; k > 0; k--) {
+      const r = Math.floor(this.rng.random() * (k + 1));
+      [arr[k], arr[r]] = [arr[r], arr[k]];
+    }
+    return arr;
+  }
+
+  /**
+   * Emits the ring geometry and indices for one skeleton branch
+   * @param {{verts: number[], normals: number[], indices: number[], uvs: number[]}} buffers
+   * @param {{sections: {origin: THREE.Vector3, orientation: THREE.Euler, radius: number}[], segmentCount: number, baseRadius: number}} skeletonBranch
+   * @param {number} sectionStride Sample every Nth section ring
+   * @param {number} segmentFactor Radial segment multiplier
+   */
+  #meshBranch(buffers, skeletonBranch, sectionStride, segmentFactor) {
+    const { sections, segmentCount, baseRadius } = skeletonBranch;
+
+    // Terminal branches inherit the parent's segmentCount, so parent and
+    // child resolve to the same reduced count and junctions stay sealed.
+    const segments = Math.max(3, Math.round(segmentCount * segmentFactor));
+
+    // Number of texture wraps around the branch's circumference. Scaling with
+    // the branch's base radius keeps bark feature size roughly consistent
+    // across thick trunks and thin twigs. Held constant for the whole branch
+    // so tapered sections share a wrap count and don't twist the texture
+    // longitudinally.
+    const wrapsX = Math.max(
+      1,
+      Math.round(baseRadius * this.options.bark.textureScale.x),
+    );
+
+    // Sample every Nth ring, always keeping the first and last so branch
+    // endpoints (and parent/child junctions) stay put across detail levels.
+    const sampled = [];
+    for (let i = 0; i < sections.length; i += sectionStride) {
+      sampled.push(sections[i]);
+    }
+    if ((sections.length - 1) % sectionStride !== 0) {
+      sampled.push(sections[sections.length - 1]);
+    }
+
+    // Used later for geometry index generation
+    const indexOffset = buffers.verts.length / 3;
+
+    for (let k = 0; k < sampled.length; k++) {
+      const section = sampled[k];
+
+      // Create the segments that make up this section.
+      let first;
+      for (let j = 0; j < segments; j++) {
+        let angle = (2.0 * Math.PI * j) / segments;
+
+        // Create the segment vertex
+        const vertex = new THREE.Vector3(Math.cos(angle), 0, Math.sin(angle))
+          .multiplyScalar(section.radius)
+          .applyEuler(section.orientation)
+          .add(section.origin);
+
+        const normal = new THREE.Vector3(Math.cos(angle), 0, Math.sin(angle))
+          .applyEuler(section.orientation)
+          .normalize();
+
+        // uv.y alternates by sampled ring position rather than original
+        // section index, so section skipping keeps the 0/1 tiling pattern.
+        const uv = new THREE.Vector2(
+          (j / segments) * wrapsX,
+          (k % 2 === 0) ? 0 : 1,
+        );
+
+        buffers.verts.push(...Object.values(vertex));
+        buffers.normals.push(...Object.values(normal));
+        buffers.uvs.push(...Object.values(uv));
+
+        if (j === 0) {
+          first = { vertex, normal, uv };
+        }
+      }
+
+      // Duplicate the first vertex so there is continuity in the UV mapping.
+      // u=wrapsX maps to the same texel as u=0 since wrapsX is an integer.
+      buffers.verts.push(...Object.values(first.vertex));
+      buffers.normals.push(...Object.values(first.normal));
+      buffers.uvs.push(wrapsX, first.uv.y);
+    }
+
+    // Build geometry for each section of the branch (cylinder without end caps)
+    let v1, v2, v3, v4;
+    const N = segments + 1;
+    for (let i = 0; i < sampled.length - 1; i++) {
+      // Build the quad for each segment of the section
+      for (let j = 0; j < segments; j++) {
+        v1 = indexOffset + i * N + j;
+        // The last segment wraps around back to the starting segment, so omit j + 1 term
+        v2 = indexOffset + i * N + (j + 1);
+        v3 = v1 + N;
+        v4 = v2 + N;
+        buffers.indices.push(v1, v3, v2, v2, v3, v4);
+      }
+    }
+  }
+
+  /**
+   * Builds a BufferGeometry from raw attribute buffers
+   * @param {{verts: number[], normals: number[], indices: number[], uvs: number[]}} buffers
+   * @returns {THREE.BufferGeometry}
+   */
+  #buildBufferGeometry(buffers) {
+    const g = new THREE.BufferGeometry();
+    g.setAttribute(
+      'position',
+      new THREE.BufferAttribute(new Float32Array(buffers.verts), 3),
+    );
+    g.setAttribute(
+      'normal',
+      new THREE.BufferAttribute(new Float32Array(buffers.normals), 3),
+    );
+    g.setAttribute(
+      'uv',
+      new THREE.BufferAttribute(new Float32Array(buffers.uvs), 2),
+    );
+    g.setIndex(
+      new THREE.BufferAttribute(new Uint16Array(buffers.indices), 1),
+    );
+    g.computeBoundingSphere();
+    return g;
+  }
+
+  /**
+   * Creates the bark material from the current options
+   * @returns {THREE.MeshStandardMaterial}
+   */
+  #createBarkMaterial() {
+    const mat = new THREE.MeshStandardMaterial({
+      name: 'branches',
+      flatShading: this.options.bark.flatShading,
+      color: new THREE.Color(this.options.bark.tint),
+      metalness: 0.0,
+      roughness: 1.0,
+    });
+
+    if (this.options.bark.textured) {
+      // textureScale.x is baked into UVs during meshing (wrapsX), so only
+      // the Y axis needs runtime scaling on the texture itself.
+      const scale = this.options.bark.textureScale;
+      const maps = this.options.bark.maps;
+      const apply = (texture) => {
+        if (!texture) return null;
+        texture.wrapS = THREE.RepeatWrapping;
+        texture.wrapT = THREE.RepeatWrapping;
+        texture.repeat.x = 1;
+        texture.repeat.y = 1 / scale.y;
+        return texture;
+      };
+      if (maps.color) mat.map = apply(maps.color);
+      if (maps.ao) mat.aoMap = apply(maps.ao);
+      if (maps.normal) mat.normalMap = apply(maps.normal);
+      if (maps.roughness) {
+        mat.roughnessMap = apply(maps.roughness);
+        // Point metalnessMap at the same texture: metalness stays 0 because
+        // the metalness factor is 0, and GLTFExporter reuses the texture
+        // as-is instead of synthesizing a merged metal/rough PNG (and
+        // warning about it) when the two slots differ.
+        mat.metalnessMap = mat.roughnessMap;
+      }
+    }
+
+    return mat;
+  }
+
+  /**
+   * Generates the geometry for the branches
+   */
+  createBranchesGeometry() {
+    this.branchesMesh.geometry.dispose();
+    this.branchesMesh.geometry = this.#buildBufferGeometry(this.branches);
+    this.branchesMesh.material.dispose();
+    this.branchesMesh.material = this.#createBarkMaterial();
+    this.branchesMesh.castShadow = true;
+    this.branchesMesh.receiveShadow = true;
+  }
+
+  /**
+   * Creates the leaf material, including the wind sway vertex shader, from
+   * the current options
+   * @returns {THREE.MeshStandardMaterial}
+   */
+  #createLeafMaterial() {
+    const mat = new THREE.MeshStandardMaterial({
+      name: 'leaves',
+      map: this.options.leaves.map ?? null,
+      color: new THREE.Color(this.options.leaves.tint),
+      side: THREE.DoubleSide,
+      alphaTest: this.options.leaves.alphaTest,
+      metalness: 0.0,
+      roughness: 1.0,
+      dithering: true
+    });
+
+    // Add custom shader code for branch swaying
+    mat.onBeforeCompile = (shader) => {
+      shader.uniforms.uTime = { value: 0 };
+      shader.uniforms.uWindStrength = { value: new THREE.Vector3(0.5, 0, 0.5) };
+      shader.uniforms.uWindFrequency = { value: 0.5 };
+      shader.uniforms.uWindScale = { value: 70 };
+      shader.uniforms.uCustomNormals = { value: this.options.leaves.roundedNormals };
+
+      shader.vertexShader = `
+        uniform float uTime;
+        uniform vec3 uWindStrength;
+        uniform float uWindFrequency;
+        uniform float uWindScale;
+        ` + shader.vertexShader;
+
+      // Add code for simplex noise
+      shader.vertexShader = shader.vertexShader.replace(
+        `void main() {`,
+        `
+        // GLSL Simplex Noise 3D
+        // Source: https://github.com/ashima/webgl-noise
+
+        vec3 mod289(vec3 x) {
+            return x - floor(x * (1.0 / 289.0)) * 289.0;
+        }
+
+        vec4 mod289(vec4 x) {
+            return x - floor(x * (1.0 / 289.0)) * 289.0;
+        }
+
+        vec4 permute(vec4 x) {
+            return mod289(((x*34.0)+1.0)*x);
+        }
+
+        vec4 taylorInvSqrt(vec4 r) {
+            return 1.79284291400159 - 0.85373472095314 * r;
+        }
+
+        vec3 fade(vec3 t) {
+            return t*t*t*(t*(t*6.0-15.0)+10.0);
+        }
+
+        // Classic Simplex Noise 3D
+        float simplex3(vec3 v) {
+            const vec2  C = vec2(1.0/6.0, 1.0/3.0);
+            const vec4  D = vec4(0.0, 0.5, 1.0, 2.0);
+
+            // First corner
+            vec3 i  = floor(v + dot(v, C.yyy) );
+            vec3 x0 = v - i + dot(i, C.xxx);
+
+            // Other corners
+            vec3 g = step(x0.yzx, x0.xyz);
+            vec3 l = 1.0 - g;
+            vec3 i1 = min( g.xyz, l.zxy );
+            vec3 i2 = max( g.xyz, l.zxy );
+
+            //  x0 = x0 - 0. + 0.0 * C 
+            vec3 x1 = x0 - i1 + C.xxx;
+            vec3 x2 = x0 - i2 + C.yyy; // 2.0 * C.x = 1/3 = C.y
+            vec3 x3 = x0 - D.yyy;      // -1.0 + 3.0 * C.x = -0.5
+
+            // Permutations
+            i = mod289(i);
+            vec4 p = permute( permute( permute( 
+                        i.z + vec4(0.0, i1.z, i2.z, 1.0 ))
+                      + i.y + vec4(0.0, i1.y, i2.y, 1.0 )) 
+                      + i.x + vec4(0.0, i1.x, i2.x, 1.0 ));
+
+            // Gradients: 7x7 points over a square, mapped onto an octahedron.
+            // The ring size 17*17 = 289 is close to the mapping's singularity.
+            float n_ = 0.142857142857; // 1.0/7.0
+            vec3  ns = n_ * D.wyz - D.xzx;
+
+            vec4 j = p - 49.0 * floor(p * ns.z * ns.z);  //  mod(p,7*7)
+
+            vec4 x_ = floor(j * ns.z);
+            vec4 y_ = floor(j - 7.0 * x_ );    // mod(j,N)
+
+            vec4 x = x_ *ns.x + ns.yyyy;
+            vec4 y = y_ *ns.x + ns.yyyy;
+            vec4 h = 1.0 - abs(x) - abs(y);
+
+            vec4 b0 = vec4( x.xy, y.xy );
+            vec4 b1 = vec4( x.zw, y.zw );
+
+            vec4 s0 = floor(b0)*2.0 + 1.0;
+            vec4 s1 = floor(b1)*2.0 + 1.0;
+            vec4 sh = -step(h, vec4(0.0));
+
+            vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy ;
+            vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww ;
+
+            vec3 g0 = vec3(a0.xy,h.x);
+            vec3 g1 = vec3(a0.zw,h.y);
+            vec3 g2 = vec3(a1.xy,h.z);
+            vec3 g3 = vec3(a1.zw,h.w);
+
+            // Normalise gradients
+            vec4 norm = taylorInvSqrt(vec4(dot(g0,g0), dot(g1,g1), dot(g2,g2), dot(g3,g3)));
+            g0 *= norm.x;
+            g1 *= norm.y;
+            g2 *= norm.z;
+            g3 *= norm.w;
+
+            // Mix contributions from the four corners
+            vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
+            m = m * m;
+            return 42.0 * dot( m*m, vec4( dot(g0,x0), dot(g1,x1), 
+                                          dot(g2,x2), dot(g3,x3) ) );
+        }
+          
+        void main() {`,
+      );
+
+      shader.vertexShader = shader.vertexShader.replace(
+        `#include <project_vertex>`,
+        `
+        vec4 mvPosition = vec4(transformed, 1.0);
+
+        float windOffset = 2.0 * 3.14 * simplex3(mvPosition.xyz / uWindScale);
+        vec3 windSway = uv.y * uWindStrength * (
+          0.5 * sin(uTime * uWindFrequency + windOffset) +
+          0.3 * sin(2.0 * uTime * uWindFrequency + 1.3 * windOffset) +
+          0.2 * sin(5.0 * uTime * uWindFrequency + 1.5 * windOffset)
+        );
+        mvPosition.xyz += windSway;
+
+        mvPosition = modelViewMatrix * mvPosition;
+        gl_Position = projectionMatrix * mvPosition;
+        `
+      );
+
+      // Skip the backface normal flip in normal_fragment_begin when using custom normals
+      shader.fragmentShader = `uniform bool uCustomNormals;\n` + shader.fragmentShader.replace(
+        '#include <normal_fragment_begin>',
+        THREE.ShaderChunk.normal_fragment_begin.replace(
+          'normal *= faceDirection;',
+          'if (!uCustomNormals) { normal *= faceDirection; }'
+        )
+      );
+
+      // Non-enumerable so JSON serialization (e.g. GLTFExporter's userData
+      // pass) skips the live shader object — Texture uniforms inside it are
+      // not serializable. update() still reads userData.shader normally.
+      Object.defineProperty(mat.userData, 'shader', {
+        value: shader,
+        configurable: true,
+        enumerable: false,
+      });
+    };
+
+    return mat;
+  }
+
+  /**
+   * Generates the geometry for the leaves
+   */
+  createLeavesGeometry() {
+    this.leavesMesh.geometry.dispose();
+    this.leavesMesh.geometry = this.#buildBufferGeometry(this.leaves);
+    this.leavesMesh.material.dispose();
+    this.leavesMesh.material = this.#createLeafMaterial();
+    this.leavesMesh.castShadow = true;
+    this.leavesMesh.receiveShadow = true;
+  }
+
+  /**
+   * Create or update the trellis geometry
+   */
+  createTrellis() {
+    // Remove old trellis if exists
+    if (this.trellisMesh) {
+      this.remove(this.trellisMesh);
+      this.trellisMesh.dispose();
+      this.trellisMesh = null;
+    }
+
+    // Create new trellis if enabled and visible
+    if (this.options.trellis.enabled && this.options.trellis.visible) {
+      this.trellisMesh = new Trellis(this.options.trellis);
+      this.trellisMesh.generate();
+      this.add(this.trellisMesh);
+    }
+  }
+
+  /**
+   * Find the nearest point on the trellis grid to a given position
+   * @param {THREE.Vector3} position
+   * @returns {THREE.Vector3}
+   */
+  getNearestTrellisPoint(position) {
+    const t = this.options.trellis;
+    const trellisX = t.position.x;
+    const trellisY = t.position.y;
+    const trellisZ = t.position.z;
+
+    // Trellis bounds
+    const minX = trellisX - t.width / 2;
+    const maxX = trellisX + t.width / 2;
+    const minY = trellisY;
+    const maxY = trellisY + t.height;
+
+    // Clamp position to trellis bounds for projection
+    const clampedX = Math.max(minX, Math.min(maxX, position.x));
+    const clampedY = Math.max(minY, Math.min(maxY, position.y));
+
+    // Find nearest horizontal line (Y = constant)
+    const nearestHLineY = Math.round((clampedY - minY) / t.spacing) * t.spacing + minY;
+    const finalHLineY = Math.max(minY, Math.min(maxY, nearestHLineY));
+
+    // Find nearest vertical line (X = constant)
+    const nearestVLineX = Math.round((clampedX - minX) / t.spacing) * t.spacing + minX;
+    const finalVLineX = Math.max(minX, Math.min(maxX, nearestVLineX));
+
+    // Point on nearest horizontal line (X can vary along the line)
+    const pointOnHLine = new THREE.Vector3(clampedX, finalHLineY, trellisZ);
+
+    // Point on nearest vertical line (Y can vary along the line)
+    const pointOnVLine = new THREE.Vector3(finalVLineX, clampedY, trellisZ);
+
+    // Return whichever is closer
+    const distH = position.distanceTo(pointOnHLine);
+    const distV = position.distanceTo(pointOnVLine);
+
+    return distH < distV ? pointOnHLine : pointOnVLine;
+  }
+
+  /**
+   * Calculate the force vector toward the nearest trellis point
+   * @param {THREE.Vector3} position Current section position
+   * @param {number} radius Current section radius
+   * @returns {{ direction: THREE.Vector3, strength: number } | null}
+   */
+  calculateTrellisForce(position, radius) {
+    const trellis = this.options.trellis;
+    const nearestPoint = this.getNearestTrellisPoint(position);
+
+    const distance = position.distanceTo(nearestPoint);
+
+    // Only apply force within max distance
+    if (distance > trellis.force.maxDistance) return null;
+    if (distance < 0.001) return null; // Avoid division by zero
+
+    // Calculate direction toward trellis
+    const direction = new THREE.Vector3()
+      .subVectors(nearestPoint, position)
+      .normalize();
+
+    // Calculate strength with distance falloff
+    // Closer = stronger force, scaled by inverse radius (like existing force)
+    const distanceFactor = 1 - Math.pow(
+      distance / trellis.force.maxDistance,
+      trellis.force.falloff,
+    );
+    const strength = trellis.force.strength * distanceFactor / radius;
+
+    return { direction, strength };
+  }
+
+  get vertexCount() {
+    return (this.branches.verts.length + this.leaves.verts.length) / 3;
+  }
+
+  get triangleCount() {
+    return (this.branches.indices.length + this.leaves.indices.length) / 3;
+  }
+}
+
+return { Tree, loadPreset };
+}
+
+</script>
+
 </body>
 </html>
